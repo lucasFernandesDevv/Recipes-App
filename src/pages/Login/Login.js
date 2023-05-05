@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Login() {
+  const [userEmail, setUserEmail] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+
+  function handleInput({ target: { name, value } }) {
+    switch (name) {
+    case 'email':
+      setUserEmail(value);
+      break;
+    case 'password':
+      setUserPassword(value);
+      break;
+    default:
+      break;
+    }
+  }
+
   return (
     <main className="flex justify-center items-center h-screen">
       <form className="flex flex-col justify-center gap-4 items-center">
@@ -12,6 +28,7 @@ export default function Login() {
             id="email"
             placeholder="Email"
             data-testid="email-input"
+            onChange={ (e) => handleInput(e) }
             className="
               border-2
               border-violet-300
@@ -30,6 +47,7 @@ export default function Login() {
             id="password"
             placeholder="Password"
             data-testid="password-input"
+            onChange={ (e) => handleInput(e) }
             className="
             border-2
             border-violet-300
