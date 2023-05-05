@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 export default function Login() {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [validLoginFields, setValidLoginFields] = useState();
 
   function handleInput({ target: { name, value } }) {
     switch (name) {
@@ -16,6 +17,24 @@ export default function Login() {
       break;
     }
   }
+
+  const validateEmail = useCallback(() => {
+    const emailRegex = /\S+@\S+\.\S+/;
+    return emailRegex.test(userEmail);
+  }, [userEmail]);
+
+  const validatePassword = useCallback(() => {
+    const passwordRegex = /\S{6}/;
+    return passwordRegex.test(userPassword);
+  }, [userPassword]);
+
+  useEffect(() => {
+    if (validateEmail() && validatePassword()) {
+      setValidLoginFields(true);
+    } else {
+      setValidLoginFields(false);
+    }
+  }, [userEmail, userPassword, validateEmail, validatePassword]);
 
   return (
     <main className="flex justify-center items-center h-screen">
@@ -62,7 +81,16 @@ export default function Login() {
         <button
           type="submit"
           data-testid="login-submit-btn"
-          className="w-64 ml-2 bg-yellow-400 rounded-md text-white font-extrabold p-2"
+          disabled={ !validLoginFields }
+          className="
+            w-64
+            ml-2
+            bg-yellow-400
+            rounded-md
+            text-white
+            font-extrabold
+            p-2
+            disabled:bg-zinc-400"
         >
           ENTER
         </button>
