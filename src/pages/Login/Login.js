@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function Login() {
+  const history = useHistory();
+
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [validLoginFields, setValidLoginFields] = useState();
@@ -28,6 +31,11 @@ export default function Login() {
     return passwordRegex.test(userPassword);
   }, [userPassword]);
 
+  function handleLogin() {
+    localStorage.setItem('user', JSON.stringify({ email: userEmail }));
+    history.push('/meals');
+  }
+
   useEffect(() => {
     if (validateEmail() && validatePassword()) {
       setValidLoginFields(true);
@@ -38,7 +46,10 @@ export default function Login() {
 
   return (
     <main className="flex justify-center items-center h-screen">
-      <form className="flex flex-col justify-center gap-4 items-center">
+      <form
+        onSubmit={ handleLogin }
+        className="flex flex-col justify-center gap-4 items-center"
+      >
         <h1 className="text-xl text-violet-700 italic">LOGIN</h1>
         <label htmlFor="email">
           <input
