@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function Login() {
   const history = useHistory();
-
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
   const [validLoginFields, setValidLoginFields] = useState();
@@ -27,11 +26,12 @@ export default function Login() {
   }, [userEmail]);
 
   const validatePassword = useCallback(() => {
-    const passwordRegex = /\S{6}/;
+    const passwordRegex = /\S{7}/;
     return passwordRegex.test(userPassword);
   }, [userPassword]);
 
-  function handleLogin() {
+  function handleLogin(e) {
+    e.preventDefault();
     localStorage.setItem('user', JSON.stringify({ email: userEmail }));
     history.push('/meals');
   }
