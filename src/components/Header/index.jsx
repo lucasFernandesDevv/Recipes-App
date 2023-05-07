@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import iconProfile from '../../images/profileIcon.svg';
 import searchBtn from '../../images/searchIcon.svg';
 import './Header.css';
+import SearchBar from '../SearchBar';
 
 function Header({ title }) {
   const [showBar, setShowBar] = useState(null);
@@ -43,16 +44,8 @@ function Header({ title }) {
             />
           </button>
         )}
-          {
-            showBar
-          && <input
-            className="border-2 border-violet-300 outline-none placeholder-violet-300
-              ml-2 w-64 p-2"
-            type="text"
-            data-testid="search-input"
-          />
-          }
         </div>
+        { showBar && <SearchBar /> }
       </div>
     </>
   );
