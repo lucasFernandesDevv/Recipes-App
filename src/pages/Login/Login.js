@@ -27,7 +27,7 @@ export default function Login() {
   }, [userEmail]);
 
   const validatePassword = useCallback(() => {
-    const passwordRegex = /\S{6}/;
+    const passwordRegex = /\S{7}/;
     return passwordRegex.test(userPassword);
   }, [userPassword]);
 
