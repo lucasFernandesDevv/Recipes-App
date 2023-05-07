@@ -74,7 +74,7 @@ describe('Testes da tela de login', () => {
     expect(user.email).toBe(userTestEmail);
   });
   it('Redireciona a pessoa usuária para a tela de receitas de comidas após o login', () => {
-    const userTestEmail = 'test@tryber.com';
+    const userTestEmail = 'test2@tryber.com';
     const userTestPassword = '1234567';
 
     const { history } = renderWithRouter(<App />);
