@@ -22,9 +22,19 @@ function Header({ title }) {
   };
 
   return (
-    <>
-      <h1 data-testid="page-title">{ title }</h1>
-      <div className="header">
+    <div className="border-b border-gray-900/10 items-center pb-12">
+      <div>
+        <h1
+          data-testid="page-title"
+          className="bg-violet-900 text-white rounded-md px-3
+       py-2 relative ml-0 items-center
+       mt-0 text-center
+      text-lg font-larger"
+        >
+          { title }
+        </h1>
+      </div>
+      <div className="space-y-12">
         <img
           onClickCapture={ handlePerfil }
           data-testid="profile-top-btn"
@@ -47,7 +57,7 @@ function Header({ title }) {
         </div>
         { showBar && <SearchBar /> }
       </div>
-    </>
+    </div>
   );
 }
 
