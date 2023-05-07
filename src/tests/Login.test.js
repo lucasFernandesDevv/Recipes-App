@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouter from './helpers/RenderWithRouter';
@@ -72,5 +72,26 @@ describe('Testes da tela de login', () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     expect(user.email).toBe(userTestEmail);
+  });
+  it('Redireciona a pessoa usuária para a tela de receitas de comidas após o login', () => {
+    const userTestEmail = 'test@tryber.com';
+    const userTestPassword = '1234567';
+
+    const { history } = renderWithRouter(<App />);
+
+    const emailInputElement = screen.getByPlaceholderText(/email/i);
+    const passwordInputElement = screen.getByPlaceholderText(/password/i);
+    const loginButtonElement = screen.getByRole('button', { name: /enter/i });
+
+    userEvent.type(emailInputElement, userTestEmail);
+    userEvent.type(passwordInputElement, userTestPassword);
+
+    act(() => {
+      userEvent.click(loginButtonElement);
+    });
+
+    const { pathname } = history.location;
+
+    expect(pathname).toBe('/meals');
   });
 });
