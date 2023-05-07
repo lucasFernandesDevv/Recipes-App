@@ -14,8 +14,8 @@ function SearchBar() {
       setFilter(value);
     }
   };
-  const { location } = useHistory();
 
+  const { location } = useHistory();
 
   const handleFetchData = async () => {
     const { pathname } = location;
