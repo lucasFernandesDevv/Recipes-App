@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 
 function SearchBar() {
@@ -13,8 +14,12 @@ function SearchBar() {
       setFilter(value);
     }
   };
+  const { location } = useHistory();
+
 
   const handleFetchData = async () => {
+    const { pathname } = location;
+    console.log(pathname);
     let results = '';
     if (search === 'first-letter' && filter.length > 1) {
       global.alert('Your search must have only 1 (one) character');
