@@ -12,10 +12,8 @@ export default function Login() {
     case 'email':
       setUserEmail(value);
       break;
-    case 'password':
-      setUserPassword(value);
-      break;
     default:
+      setUserPassword(value);
       break;
     }
   }
