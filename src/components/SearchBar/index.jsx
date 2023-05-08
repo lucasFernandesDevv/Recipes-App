@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import useFetch from '../../hooks/useFetch';
+import { addRecipes } from '../../redux/actions';
 
 const firstLetter = 'first-letter';
 
-function SearchBar() {
+function SearchBar({ dispatch }) {
   const [search, setSearch] = useState('ingredient');
   const { fetchData } = useFetch();
-  const [filter, setFilter] = useState();
+  const [filter, setFilter] = useState('');
   const handleSearch = ({ target }) => {
     const { name, value } = target;
     if (name === 'search') {
@@ -16,15 +19,11 @@ function SearchBar() {
       setFilter(value);
     }
   };
-
   const { location } = useHistory();
+  const history = useHistory();
 
   const handleMeals = async () => {
     let results = '';
-    if (search === firstLetter && filter.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
-      return;
-    }
     if (search === 'ingredient') {
       results = await fetchData(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${filter}`);
     } else if (search === firstLetter) {
@@ -32,15 +31,15 @@ function SearchBar() {
     } else {
       results = await fetchData(`https://www.themealdb.com/api/json/v1/1/search.php?s=${filter}`);
     }
-    return results;
+    if (!results.meals) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      return;
+    }
+    return results.meals;
   };
 
   const handleDrinks = async () => {
     let results = '';
-    if (search === firstLetter && filter.length > 1) {
-      global.alert('Your search must have only 1 (one) character');
-      return;
-    }
     if (search === 'ingredient') {
       results = await fetchData(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${filter}`);
     } else if (search === firstLetter) {
@@ -48,22 +47,40 @@ function SearchBar() {
     } else {
       results = await fetchData(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${filter}`);
     }
-    return results;
+    if (!results.drinks) {
+      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+      return;
+    }
+    return results.drinks;
   };
 
   const handleFetchData = async () => {
     const { pathname } = location;
-    let results = '';
-    if (pathname === '/meals') {
-      results = await handleMeals();
-    } if (pathname === '/drinks') {
-      results = await handleDrinks();
+    if (search === firstLetter && filter.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+      return;
     }
-    console.log(results);
+    let recipe = '';
+    let id = '';
+    if (pathname === '/meals') {
+      recipe = await handleMeals();
+      if (!recipe) {
+        return;
+      }
+      id = recipe[0].idMeal;
+    } if (pathname === '/drinks') {
+      recipe = await handleDrinks();
+      if (!recipe) {
+        return;
+      }
+      id = recipe[0].idDrink;
+    }
+    dispatch(addRecipes(recipe));
+    if (recipe && recipe.length === 1) history.push(`${pathname}/${id}`);
   };
 
   return (
-    <div onChange={ handleSearch }>
+    <div>
       <input
         className="border-2 border-violet-300 outline-none placeholder-violet-300
               ml-2 w-64 p-2"
@@ -71,6 +88,7 @@ function SearchBar() {
         data-testid="search-input"
         value={ filter }
         name="filter"
+        onChange={ handleSearch }
       />
       <label>
         Ingredient:
@@ -81,6 +99,7 @@ function SearchBar() {
           name="search"
           data-testid="ingredient-search-radio"
           value="ingredient"
+          onChange={ handleSearch }
         />
         {' '}
       </label>
@@ -92,6 +111,7 @@ function SearchBar() {
           name="search"
           data-testid="name-search-radio"
           value="name"
+          onChange={ handleSearch }
         />
         {' '}
       </label>
@@ -103,6 +123,7 @@ function SearchBar() {
           name="search"
           data-testid="first-letter-search-radio"
           value="first-letter"
+          onChange={ handleSearch }
         />
         {' '}
       </label>
@@ -118,4 +139,8 @@ function SearchBar() {
   );
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
+
+export default connect()(SearchBar);
