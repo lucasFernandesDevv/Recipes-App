@@ -6,6 +6,8 @@
     "node": "16 || 18"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.17",
+    "@phosphor-icons/react": "^2.0.9",
     "@redux-devtools/extension": "^3.2.5",
     "bootstrap": "^5.2.3",
     "clipboard-copy": "^4.0.1",
