@@ -27,9 +27,9 @@ function Header({ title }) {
         <h1
           data-testid="page-title"
           className="bg-violet-900 text-white rounded-md px-3
-       py-2 relative ml-0 items-center
-       mt-0 text-center
-      text-lg font-larger"
+          py-2 relative ml-0 items-center
+          mt-0 text-center
+          text-5xl font-larger"
         >
           { title }
         </h1>
