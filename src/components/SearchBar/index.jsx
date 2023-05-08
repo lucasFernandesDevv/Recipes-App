@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 
+const firstLetter = 'first-letter';
+
 function SearchBar() {
   const [search, setSearch] = useState('ingredient');
   const { fetchData } = useFetch();
@@ -17,20 +19,45 @@ function SearchBar() {
 
   const { location } = useHistory();
 
-  const handleFetchData = async () => {
-    const { pathname } = location;
-    console.log(pathname);
+  const handleMeals = async () => {
     let results = '';
-    if (search === 'first-letter' && filter.length > 1) {
+    if (search === firstLetter && filter.length > 1) {
       global.alert('Your search must have only 1 (one) character');
       return;
     }
     if (search === 'ingredient') {
       results = await fetchData(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${filter}`);
-    } else if (search === 'first-letter') {
+    } else if (search === firstLetter) {
       results = await fetchData(`https://www.themealdb.com/api/json/v1/1/search.php?f=${filter}`);
     } else {
       results = await fetchData(`https://www.themealdb.com/api/json/v1/1/search.php?s=${filter}`);
+    }
+    return results;
+  };
+
+  const handleDrinks = async () => {
+    let results = '';
+    if (search === firstLetter && filter.length > 1) {
+      global.alert('Your search must have only 1 (one) character');
+      return;
+    }
+    if (search === 'ingredient') {
+      results = await fetchData(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${filter}`);
+    } else if (search === firstLetter) {
+      results = await fetchData(`https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${filter}`);
+    } else {
+      results = await fetchData(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${filter}`);
+    }
+    return results;
+  };
+
+  const handleFetchData = async () => {
+    const { pathname } = location;
+    let results = '';
+    if (pathname === '/meals') {
+      results = await handleMeals();
+    } if (pathname === '/drinks') {
+      results = await handleDrinks();
     }
     console.log(results);
   };

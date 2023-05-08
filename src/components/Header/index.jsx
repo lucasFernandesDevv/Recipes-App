@@ -36,25 +36,25 @@ function Header({ title }) {
       </div>
       <div className="space-y-12">
         <img
+          className="ml-2 my-2"
           onClickCapture={ handlePerfil }
           data-testid="profile-top-btn"
           src={ iconProfile }
           alt="profile-icon"
         />
-        <div>
-          { (title === 'Drinks' || title === 'Meals')
+        { (title === 'Drinks' || title === 'Meals')
         && (
           <button
             onClick={ (e) => changeBar(e) }
           >
             <img
+              className="ml-2 my-2"
               data-testid="search-top-btn"
               src={ searchBtn }
               alt="search-top-btn"
             />
           </button>
         )}
-        </div>
         { showBar && <SearchBar /> }
       </div>
     </div>
