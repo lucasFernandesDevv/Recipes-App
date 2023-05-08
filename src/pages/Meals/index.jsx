@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../../components/Header';
 import Recipes from '../../components/Recipes';
+import Footer from '../../components/Footer';
 
 export default function Meals() {
   const [meals, setMeals] = useState([]);
@@ -16,6 +17,7 @@ export default function Meals() {
     <div>
       <Header title="Meals" />
       <Recipes recipes={ meals } />
+      <Footer />
     </div>
   );
 }
