@@ -17,6 +17,7 @@ function Drinks() {
     <div>
       <Header title="Drinks" />
       <Recipes recipes={ drinks } />
+      <Recipes />
       <Footer />
     </div>
   );

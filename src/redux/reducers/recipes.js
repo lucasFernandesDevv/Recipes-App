@@ -1,8 +1,8 @@
 import { SAVE_DRINKS, SAVE_MEALS } from '../helpers/variables';
 
 const INITIAL_STATE = {
-  meals: ['test'],
-  drinks: ['test'],
+  meals: [],
+  drinks: [],
 };
 
 const recipes = (state = INITIAL_STATE, { type, payload }) => {

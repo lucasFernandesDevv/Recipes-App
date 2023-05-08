@@ -1,4 +1,4 @@
-import { SAVE_DRINKS, SAVE_MEALS } from '../helpers/variables';
+import { SAVE_DRINKS, SAVE_MEALS, RECIPES_ADD } from '../helpers/variables';
 
 // Coloque aqui suas actions
 export const saveDrinks = (payload) => ({
@@ -11,41 +11,24 @@ export const saveMeals = (payload) => ({
   payload,
 });
 
-// export const addUser = (email) => ({
-//   type: USER,
-//   email,
-// });
+// Coloque aqui suas actions
+export const addRecipes = (recipe) => ({
+  type: RECIPES_ADD,
+  recipe,
+});
 
-// export const addWallet = (payload) => ({
-//   type: SAVE_EXPENSE,
-//   payload,
-// });
+export function fetchMealsRecipes() {
+  return async (dispatch) => {
+    const response = await fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    const data = await response.json();
+    dispatch(saveMeals(data.meals));
+  };
+}
 
-// export const editWallet = (payload) => ({
-//   type: 'EDIT_WALLET',
-//   payload,
-// });
-
-// export const succedRequest = (payload) => ({
-//   type: 'SUCCEEDED_REQUEST',
-//   payload,
-// });
-
-// export const updateWallet = (payload) => ({
-//   type: 'UPDATE_WALLET',
-//   payload,
-// });
-
-// export const saveWallet = (payload) => ({
-//   type: 'SAVE_WALLET',
-//   payload,
-// });
-
-// export const updateTotal = (payload) => ({
-//   type: 'UPDATE_TOTAL',
-//   payload,
-// });
-
-export const fetchApiThunk = () => async () => {
-  // dispatch(getCurrencies());
-};
+export function fetchDrinksRecipes() {
+  return async (dispatch) => {
+    const response = await fetch('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    const data = await response.json();
+    dispatch(saveDrinks(data.drinks));
+  };
+}

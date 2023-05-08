@@ -17,6 +17,7 @@ export default function Meals() {
     <div>
       <Header title="Meals" />
       <Recipes recipes={ meals } />
+      <Recipes />
       <Footer />
     </div>
   );

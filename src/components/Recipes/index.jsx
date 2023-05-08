@@ -7,18 +7,16 @@ import {
 } from 'react-router-dom/cjs/react-router-dom.min';
 import RecipeCard from '../RecipeCard';
 
-function Recipes({ recipes }) {
+function Recipes({ recipes = [] }) {
   const { id } = useParams();
-  const history = useHistory();
-
-  const { pathname } = history.location;
+  const { location: { pathname } } = useHistory();
 
   const maxRecipesShown = 12;
 
   return (
     <div className="flex justify-center gap-2 flex-wrap">
       {pathname.includes('meals')
-        ? recipes.map(
+        ? recipes.meals.map(
           ({ idMeal, strMeal, strMealThumb }, i) => i < maxRecipesShown && (
             <RecipeCard
               key={ idMeal }
@@ -28,7 +26,7 @@ function Recipes({ recipes }) {
             />
           ),
         )
-        : recipes.map(
+        : recipes.drinks.map(
           ({ idDrink, strDrink, strDrinkThumb }, i) => i < maxRecipesShown && (
             <RecipeCard
               key={ idDrink }
@@ -48,7 +46,7 @@ const mapStateToProps = ({ recipes }) => ({
 });
 
 Recipes.propTypes = {
-  recipes: PropTypes.arrayOf({}).isRequired,
+  recipes: PropTypes.shape({}),
 };
 
 export default connect(mapStateToProps)(Recipes);
