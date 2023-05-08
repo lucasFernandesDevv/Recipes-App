@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 import {
   useHistory,
   useParams,
 } from 'react-router-dom/cjs/react-router-dom.min';
 import RecipeCard from '../RecipeCard';
 
-function Recipes({ recipes = [] }) {
+function Recipes({ recipes }) {
   const { id } = useParams();
   const history = useHistory();
 
@@ -42,8 +43,12 @@ function Recipes({ recipes = [] }) {
   );
 }
 
+const mapStateToProps = ({ recipes }) => ({
+  recipes,
+});
+
 Recipes.propTypes = {
-  recipes: PropTypes.arrayOf({}),
+  recipes: PropTypes.arrayOf({}).isRequired,
 };
 
-export default Recipes;
+export default connect(mapStateToProps)(Recipes);
