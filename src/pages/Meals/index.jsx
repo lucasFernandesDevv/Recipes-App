@@ -7,10 +7,9 @@ export default function Meals() {
 
   useEffect(() => {
     // fetch the recipe from the API
-    const maxMeals = 12;
     fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
       .then((res) => res.json())
-      .then((data) => setMeals(data.meals.map((meal, i) => i < maxMeals && meal)));
+      .then((data) => setMeals(data.meals));
   }, []);
 
   return (

@@ -30,9 +30,7 @@ function Header({ title }) {
           items-center justify-center
         "
       >
-        <h1
-          className="text-lg font-larger italic"
-        >
+        <h1 className="text-lg font-larger italic">
           RECIPES
           {' '}
           <span className="font-extrabold not-italic">app</span>
@@ -56,7 +54,12 @@ function Header({ title }) {
       </div>
       <div className="flex flex-col items-center gap-2">
         <ForkKnife size={ 54 } weight="fill" className="text-yellow-400" />
-        <h2 className="text-violet-800 font-extrabold text-4xl uppercase">{ title }</h2>
+        <h2
+          className="text-violet-800 font-extrabold text-4xl uppercase"
+          data-testid="page-title"
+        >
+          {title}
+        </h2>
       </div>
       {showBar && <SearchBar />}
     </div>
