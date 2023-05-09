@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link, useHistory } from 'react-router-dom';
 
 const MAGIC_SLICE = 12;
 
@@ -41,12 +41,13 @@ function Recipes({ recipes }) {
             src={ recipe[params.img] }
             alt={ recipe[params.img] }
           />
-          <p
+          <Link
+            to={ `${location.pathname}/${recipe[params.id]}` }
             data-testid={ `${index}-card-name` }
             className="text-red-800 text-4xl"
           >
             {recipe[params.name]}
-          </p>
+          </Link>
         </div>
       ))}
     </div>
