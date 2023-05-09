@@ -6,6 +6,7 @@ import {
   useParams,
 } from 'react-router-dom/cjs/react-router-dom.min';
 import RecipeCard from '../RecipeCard';
+import CategoriesBar from '../CategoriesBar';
 
 function Recipes({ recipes = [] }) {
   const { id } = useParams();
@@ -13,6 +14,7 @@ function Recipes({ recipes = [] }) {
 
   return (
     <div className="flex justify-center gap-2 flex-wrap">
+      <CategoriesBar />
       {pathname.includes('meals')
         ? recipes.meals.map(
           ({ idMeal, strMeal, strMealThumb }, i) => (
