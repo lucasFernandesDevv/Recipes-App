@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import useFetch from '../../hooks/useFetch';
-import { addRecipes } from '../../redux/actions';
+import { saveDrinks, saveMeals } from '../../redux/actions';
 
 const firstLetter = 'first-letter';
 
@@ -25,11 +25,17 @@ function SearchBar({ dispatch }) {
   const handleMeals = async () => {
     let results = '';
     if (search === 'ingredient') {
-      results = await fetchData(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${filter}`);
-    } else if (search === firstLetter) {
-      results = await fetchData(`https://www.themealdb.com/api/json/v1/1/search.php?f=${filter}`);
+      results = await fetchData(
+        `https://www.themealdb.com/api/json/v1/1/filter.php?i=${filter}`,
+      );
+    } else if (search === 'first-letter') {
+      results = await fetchData(
+        `https://www.themealdb.com/api/json/v1/1/search.php?f=${filter}`,
+      );
     } else {
-      results = await fetchData(`https://www.themealdb.com/api/json/v1/1/search.php?s=${filter}`);
+      results = await fetchData(
+        `https://www.themealdb.com/api/json/v1/1/search.php?s=${filter}`,
+      );
     }
     if (!results.meals) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
@@ -60,81 +66,98 @@ function SearchBar({ dispatch }) {
       global.alert('Your search must have only 1 (one) character');
       return;
     }
-    let recipe = '';
-    let id = '';
     if (pathname === '/meals') {
-      recipe = await handleMeals();
-      if (!recipe) {
+      const filteredRecipes = await handleMeals();
+      if (!filteredRecipes) {
         return;
       }
-      id = recipe[0].idMeal;
+      if (filteredRecipes.length === 1) {
+        const id = filteredRecipes[0].idMeal;
+        history.push(`${pathname}/${id}`);
+      }
+      dispatch(saveMeals(filteredRecipes));
     } if (pathname === '/drinks') {
-      recipe = await handleDrinks();
-      if (!recipe) {
+      const filteredRecipes = await handleDrinks();
+      if (!filteredRecipes) {
         return;
       }
-      id = recipe[0].idDrink;
+      if (filteredRecipes.length === 1) {
+        const id = filteredRecipes[0].idDrink;
+        history.push(`${pathname}/${id}`);
+      }
+      dispatch(saveDrinks(filteredRecipes));
     }
-    dispatch(addRecipes(recipe));
-    if (recipe && recipe.length === 1) history.push(`${pathname}/${id}`);
   };
 
   return (
-    <div>
+    <div
+      onChange={ handleSearch }
+      className="flex flex-col items-center gap-3 w-5/6"
+    >
       <input
-        className="border-2 border-violet-300 outline-none placeholder-violet-300
-              ml-2 w-64 p-2"
+        className="border border-zinc-400
+        w-full outline-none
+        placeholder-zinc-300 ml-2 p-2"
         type="text"
         data-testid="search-input"
         value={ filter }
         name="filter"
-        onChange={ handleSearch }
+        placeholder="Search"
       />
-      <label>
-        Ingredient:
-        {' '}
-        <input
-          defaultChecked
-          type="radio"
-          name="search"
-          data-testid="ingredient-search-radio"
-          value="ingredient"
-          onChange={ handleSearch }
-        />
-        {' '}
-      </label>
-      <label>
-        Name :
-        {' '}
-        <input
-          type="radio"
-          name="search"
-          data-testid="name-search-radio"
-          value="name"
-          onChange={ handleSearch }
-        />
-        {' '}
-      </label>
-      <label>
-        First letter:
-        {' '}
-        <input
-          type="radio"
-          name="search"
-          data-testid="first-letter-search-radio"
-          value="first-letter"
-          onChange={ handleSearch }
-        />
-        {' '}
-      </label>
-      <button
-        data-testid="exec-search-btn"
-        className="w-64 ml-2 bg-yellow-400 rounded-md text-white font-extrabold p-2
-          disabled:bg-zinc-400"
-        onClick={ handleFetchData }
+      <div
+        className="flex flex-col gap-3
+        w-full py-2 px-3 items-center
+        justify-center ml-2 bg-violet-900
+        rounded-md
+      "
       >
-        Pesquisar
-      </button>
+        <div className="flex gap-5 text-white text-xs">
+          <label className="flex items-center gap-1 justify-center">
+            <input
+              defaultChecked
+              type="radio"
+              name="search"
+              data-testid="ingredient-search-radio"
+              value="ingredient"
+              className="accent-yellow-400"
+              onChange={ handleSearch }
+            />
+            Ingredient
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="search"
+              data-testid="name-search-radio"
+              value="name"
+              className="accent-yellow-400"
+              onChange={ handleSearch }
+            />
+            {' '}
+            Name
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="search"
+              data-testid="first-letter-search-radio"
+              value="first-letter"
+              className="accent-yellow-400"
+              onChange={ handleSearch }
+            />
+            {' '}
+            First letter
+          </label>
+        </div>
+        <button
+          data-testid="exec-search-btn"
+          className="w-64 ml-2 bg-yellow-400 rounded-md text-white font-extrabold p-2
+          disabled:bg-zinc-400"
+          onClick={ handleFetchData }
+        >
+          Pesquisar
+        </button>
+      </div>
     </div>
   );
 }

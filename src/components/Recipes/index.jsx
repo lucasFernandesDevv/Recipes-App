@@ -1,65 +1,75 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import RecipeCard from '../RecipeCard';
+import CategoriesBar from '../CategoriesBar';
 
-const MAGIC_SLICE = 12;
+function Recipes({
+  meals,
+  drinks,
+  filteredMealsByCategory,
+  filteredDrinksByCategory,
+}) {
+  const { id } = useParams();
+  const {
+    location: { pathname },
+  } = useHistory();
 
-function Recipes({ recipes }) {
-  const { location } = useHistory();
-  const [actRecipes, setActRecipes] = useState([]);
-  const [params, setParams] = useState({
-    img: '',
-    name: '',
-    id: '',
-  });
+  const currentCategory = pathname === '/drinks'
+    ? filteredDrinksByCategory : filteredMealsByCategory;
+
+  const [hasFilterByCategory, setHasFilterByCategory] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === '/meals') {
-      setParams({
-        id: 'idMeal',
-        img: 'strMealThumb',
-        name: 'strMeal',
-      });
-    } else {
-      setParams({
-        id: 'idDrink',
-        img: 'strDrinkThumb',
-        name: 'strDrink',
-      });
-    }
-    setActRecipes(recipes.slice(0, MAGIC_SLICE));
-  }, [location.pathname, recipes]);
+    setHasFilterByCategory(currentCategory.length > 0);
+  }, [currentCategory]);
 
   return (
-    <div>
-      { actRecipes?.map((recipe, index) => (
-        <div data-testid={ `${index}-recipe-card` } key={ recipe[params.id] }>
-          <img
-            className="max-h-16 max-w-16"
-            data-testid={ `${index}-card-img` }
-            src={ recipe[params.img] }
-            alt={ recipe[params.img] }
-          />
-          <Link
-            to={ `${location.pathname}/${recipe[params.id]}` }
-            data-testid={ `${index}-card-name` }
-            className="text-red-800 text-4xl"
-          >
-            {recipe[params.name]}
-          </Link>
-        </div>
-      ))}
+    <div className="flex justify-center gap-2 flex-wrap">
+      <CategoriesBar setHasFilterByCategory={ setHasFilterByCategory } />
+      {pathname.includes('meals')
+        ? (hasFilterByCategory ? filteredMealsByCategory : meals).map(
+          ({ idMeal, strMeal, strMealThumb }, i) => (
+            <RecipeCard
+              key={ idMeal }
+              id={ idMeal }
+              name={ strMeal }
+              thumb={ strMealThumb }
+              index={ i }
+            />
+          ),
+        )
+        : (hasFilterByCategory ? filteredDrinksByCategory : drinks).map(
+          ({ idDrink, strDrink, strDrinkThumb }, i) => (
+            <RecipeCard
+              key={ idDrink }
+              id={ idDrink }
+              name={ strDrink }
+              thumb={ strDrinkThumb }
+              index={ i }
+            />
+          ),
+        )}
+      {id ?? ''}
     </div>
   );
 }
 
-const mapStateToProps = ({ recipes }) => ({
-  recipes: recipes.recipes,
+const mapStateToProps = ({
+  recipes: { meals, drinks, filteredMealsByCategory, filteredDrinksByCategory },
+}) => ({
+  meals,
+  drinks,
+  filteredMealsByCategory,
+  filteredDrinksByCategory,
 });
 
 Recipes.propTypes = {
-  recipes: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  drinks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  filteredDrinksByCategory: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  filteredMealsByCategory: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  meals: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default connect(mapStateToProps)(Recipes);
