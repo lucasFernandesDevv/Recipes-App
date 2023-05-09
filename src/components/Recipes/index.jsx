@@ -36,6 +36,7 @@ function Recipes({
           ({ idMeal, strMeal, strMealThumb }, i) => (
             <RecipeCard
               key={ idMeal }
+              id={ idMeal }
               name={ strMeal }
               thumb={ strMealThumb }
               index={ i }
@@ -46,6 +47,7 @@ function Recipes({
           ({ idDrink, strDrink, strDrinkThumb }, i) => (
             <RecipeCard
               key={ idDrink }
+              id={ idDrink }
               name={ strDrink }
               thumb={ strDrinkThumb }
               index={ i }
