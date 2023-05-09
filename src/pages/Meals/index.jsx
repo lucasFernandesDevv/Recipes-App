@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchMealsRecipes } from '../../redux/actions';
+import { fetchMealsRecipes, fetchMealsCategories } from '../../redux/actions';
 
 import Header from '../../components/Header';
 import Recipes from '../../components/Recipes';
@@ -8,13 +8,15 @@ import Footer from '../../components/Footer';
 
 export default function Meals() {
   const dispatch = useDispatch();
-  const saveMeals = useCallback(() => {
+
+  const saveMealsAndCategories = useCallback(() => {
     dispatch(fetchMealsRecipes());
+    dispatch(fetchMealsCategories());
   }, [dispatch]);
 
   useEffect(() => {
-    saveMeals();
-  }, [saveMeals]);
+    saveMealsAndCategories();
+  }, [saveMealsAndCategories]);
 
   return (
     <div>
