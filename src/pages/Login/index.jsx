@@ -1,10 +1,7 @@
-import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import { fetchDrinksRecipes, fetchMealsRecipes } from '../../redux/actions';
 
-function Login({ dispatch }) {
+export default function Login() {
   const history = useHistory();
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -44,15 +41,6 @@ function Login({ dispatch }) {
       setValidLoginFields(false);
     }
   }, [userEmail, userPassword, validateEmail, validatePassword]);
-
-  const saveRecipes = useCallback(() => {
-    dispatch(fetchMealsRecipes());
-    dispatch(fetchDrinksRecipes());
-  }, [dispatch]);
-
-  useEffect(() => {
-    saveRecipes();
-  }, [saveRecipes]);
 
   return (
     <main className="flex justify-center items-center h-screen">
@@ -119,9 +107,3 @@ function Login({ dispatch }) {
     </main>
   );
 }
-
-Login.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-export default connect()(Login);

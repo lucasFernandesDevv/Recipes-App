@@ -11,13 +11,11 @@ function Recipes({ recipes = [] }) {
   const { id } = useParams();
   const { location: { pathname } } = useHistory();
 
-  const maxRecipesShown = 12;
-
   return (
     <div className="flex justify-center gap-2 flex-wrap">
       {pathname.includes('meals')
         ? recipes.meals.map(
-          ({ idMeal, strMeal, strMealThumb }, i) => i < maxRecipesShown && (
+          ({ idMeal, strMeal, strMealThumb }, i) => (
             <RecipeCard
               key={ idMeal }
               name={ strMeal }
@@ -27,7 +25,7 @@ function Recipes({ recipes = [] }) {
           ),
         )
         : recipes.drinks.map(
-          ({ idDrink, strDrink, strDrinkThumb }, i) => i < maxRecipesShown && (
+          ({ idDrink, strDrink, strDrinkThumb }, i) => (
             <RecipeCard
               key={ idDrink }
               name={ strDrink }

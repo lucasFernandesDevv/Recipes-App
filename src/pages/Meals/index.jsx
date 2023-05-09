@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchMealsRecipes } from '../../redux/actions';
+
 import Header from '../../components/Header';
 import Recipes from '../../components/Recipes';
 import Footer from '../../components/Footer';
 
 export default function Meals() {
-  const [meals, setMeals] = useState([]);
+  const dispatch = useDispatch();
+  const saveMeals = useCallback(() => {
+    dispatch(fetchMealsRecipes());
+  }, [dispatch]);
 
   useEffect(() => {
-    // fetch the recipe from the API
-    fetch('https://www.themealdb.com/api/json/v1/1/search.php?s=')
-      .then((res) => res.json())
-      .then((data) => setMeals(data.meals));
-  }, []);
+    saveMeals();
+  }, [saveMeals]);
 
   return (
     <div>
       <Header title="Meals" />
-      <Recipes recipes={ meals } />
       <Recipes />
       <Footer />
     </div>

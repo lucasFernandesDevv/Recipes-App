@@ -5,17 +5,19 @@ const INITIAL_STATE = {
   drinks: [],
 };
 
+const maxRecipes = 12;
+
 const recipes = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
   case SAVE_DRINKS:
     return {
       ...state,
-      drinks: payload,
+      drinks: payload.filter((_, index) => index < maxRecipes),
     };
   case SAVE_MEALS:
     return {
       ...state,
-      meals: payload,
+      meals: payload.filter((_, index) => index < maxRecipes),
     };
   default:
     return state;

@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-export default function RecipeCard({ name = '', thumb = '', index = '' }) {
+export default function RecipeCard({ name = '', thumb = '', index = 0 }) {
   return (
     <div
-      data-testid={ `${index}-recipe-card` }
       className="w-44 rounded-lg border border-yellow-400 flex flex-col"
+      data-testid={ `${index}-recipe-card` }
     >
       <img
         data-testid={ `${index}-card-img` }

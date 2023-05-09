@@ -30,15 +30,16 @@ function Header({ title }) {
           items-center justify-center
         "
       >
-        <h1 className="text-lg font-larger italic">
+        <h2 className="text-lg font-larger italic">
           RECIPES
           {' '}
           <span className="font-extrabold not-italic">app</span>
-        </h1>
+        </h2>
         <div className="flex gap-2 absolute right-3">
           <UserCircleIcon
             onClickCapture={ handlePerfil }
             data-testid="profile-top-btn"
+            src="profileIcon"
             alt="profile-icon"
             className="w-8 h-8"
           />
@@ -46,6 +47,7 @@ function Header({ title }) {
             <MagnifyingGlassIcon
               onClickCapture={ (e) => changeBar(e) }
               data-testid="search-top-btn"
+              src="searchIcon"
               alt="search-top-btn"
               className="w-8 h-8"
             />
@@ -54,12 +56,12 @@ function Header({ title }) {
       </div>
       <div className="flex flex-col items-center gap-2">
         <ForkKnife size={ 54 } weight="fill" className="text-yellow-400" />
-        <h2
-          className="text-violet-800 font-extrabold text-4xl uppercase"
+        <h1
+          className="text-violet-800 font-extrabold text-4xl capitalize"
           data-testid="page-title"
         >
           {title}
-        </h2>
+        </h1>
       </div>
       {showBar && <SearchBar />}
     </div>
