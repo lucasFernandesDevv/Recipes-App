@@ -11,51 +11,41 @@ export default function RecipeDetails() {
   const location = useLocation();
   const [recipe, setRecipe] = useState({});
   const [ingredients, setIngredients] = useState([]);
-  const [params, setParams] = useState({
-    // type: (location.pathname === `/meals/${id}`) ? 'meals' : 'drinks',
-    id: 'idMeal',
-    video: 'strYoutube',
-    name: 'strMeal',
-    img: 'strMealThumb',
-    category: 'strCategory',
-    instructions: 'strInstructions',
-  });
+
   const [urlVideo, setUrlVideo] = useState('');
+
+  let params = {};
+  if (location.pathname.includes('meals')) {
+    params = {
+      type: 'meals',
+      id: 'idMeal',
+      video: 'strYoutube',
+      name: 'strMeal',
+      img: 'strMealThumb',
+      category: 'strCategory',
+      instructions: 'strInstructions',
+    };
+  } else {
+    params = {
+      type: 'drinks',
+      id: 'idDrink',
+      video: 'strVideo',
+      name: 'strDrink',
+      img: 'strDrinkThumb',
+      category: 'strAlcoholic',
+      instructions: 'strInstructions',
+    };
+  }
 
   useEffect(() => {
     let result = [];
     const handleFetchData = async () => {
       if (location.pathname === `/meals/${id}`) {
-        setParams({
-          type: 'meals',
-          id: 'idMeal',
-          video: 'strYoutube',
-          name: 'strMeal',
-          img: 'strMealThumb',
-          category: 'strCategory',
-          instructions: 'strInstructions',
-        });
         result = await fetchData(`${URL_API_MEALS}${id}`);
       } else {
-        setParams({
-          type: 'drinks',
-          id: 'idDrink',
-          video: 'strVideo',
-          name: 'strDrink',
-          img: 'strDrinkThumb',
-          category: 'strCategory',
-          instructions: 'strInstructions',
-        });
         result = await fetchData(`${URL_API_DRINKS}${id}`);
       }
-      // if (location.pathname === `/meals/${id}`) {
-      // } else {
-      // }
-      console.log(params);
-      console.log(result);
-
       const keys = Object.keys(result[params.type][0]);
-      console.log(keys);
       const ingredientsAll = keys.filter((key) => key.includes('strIngredient'));
       const measuresAll = keys.filter((key) => key.includes('strMeasure'));
       const ingredientsList = [];
@@ -72,14 +62,15 @@ export default function RecipeDetails() {
       setIngredients(ingredientsList);
     };
     handleFetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (recipe[params.video]) {
       setUrlVideo(recipe[params.video].replace('watch?v=', 'embed/'));
     }
-  }, [recipe]);
-
+  }, [params.video, recipe]);
+  console.log(recipe);
   return (
     <div>
       <img
