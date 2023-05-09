@@ -42,7 +42,7 @@ function CategoriesBar({
       {categories.map((category, i) => (
         <button
           key={ `category-${category.strCategory}-${i}` }
-          data-testid={ `${category.strCategory}-category-filter>` }
+          data-testid={ `${category.strCategory}-category-filter` }
           className="bg-violet-900 text-white px-2 py-1 rounded-md"
           onClick={ () => handleClick(category.strCategory) }
         >
