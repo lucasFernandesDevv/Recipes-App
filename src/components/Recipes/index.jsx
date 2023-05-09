@@ -1,33 +1,53 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   useHistory,
   useParams,
 } from 'react-router-dom/cjs/react-router-dom.min';
 import RecipeCard from '../RecipeCard';
+import CategoriesBar from '../CategoriesBar';
 
-function Recipes({ recipes = [] }) {
+function Recipes({
+  meals,
+  drinks,
+  filteredMealsByCategory,
+  filteredDrinksByCategory,
+}) {
   const { id } = useParams();
-  const { location: { pathname } } = useHistory();
+  const {
+    location: { pathname },
+  } = useHistory();
+
+  const currentCategory = pathname === '/drinks'
+    ? filteredDrinksByCategory : filteredMealsByCategory;
+
+  const [hasFilterByCategory, setHasFilterByCategory] = useState(false);
+
+  useEffect(() => {
+    setHasFilterByCategory(currentCategory.length > 0);
+  }, [currentCategory]);
 
   return (
     <div className="flex justify-center gap-2 flex-wrap">
+      <CategoriesBar setHasFilterByCategory={ setHasFilterByCategory } />
       {pathname.includes('meals')
-        ? recipes.meals.map(
+        ? (hasFilterByCategory ? filteredMealsByCategory : meals).map(
           ({ idMeal, strMeal, strMealThumb }, i) => (
             <RecipeCard
               key={ idMeal }
+              id={ idMeal }
               name={ strMeal }
               thumb={ strMealThumb }
               index={ i }
             />
           ),
         )
-        : recipes.drinks.map(
+        : (hasFilterByCategory ? filteredDrinksByCategory : drinks).map(
           ({ idDrink, strDrink, strDrinkThumb }, i) => (
             <RecipeCard
               key={ idDrink }
+              id={ idDrink }
               name={ strDrink }
               thumb={ strDrinkThumb }
               index={ i }
@@ -39,12 +59,20 @@ function Recipes({ recipes = [] }) {
   );
 }
 
-const mapStateToProps = ({ recipes }) => ({
-  recipes,
+const mapStateToProps = ({
+  recipes: { meals, drinks, filteredMealsByCategory, filteredDrinksByCategory },
+}) => ({
+  meals,
+  drinks,
+  filteredMealsByCategory,
+  filteredDrinksByCategory,
 });
 
 Recipes.propTypes = {
-  recipes: PropTypes.shape({}),
+  drinks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  filteredDrinksByCategory: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  filteredMealsByCategory: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  meals: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default connect(mapStateToProps)(Recipes);

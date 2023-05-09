@@ -3,18 +3,19 @@ import { useDispatch } from 'react-redux';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
 import Recipes from '../../components/Recipes';
-import { fetchDrinksRecipes } from '../../redux/actions';
+import { fetchDrinksRecipes, fetchDrinksCategories } from '../../redux/actions';
 
 function Drinks() {
   const dispatch = useDispatch();
 
-  const saveDrinks = useCallback(() => {
+  const saveDrinksAndCategories = useCallback(() => {
     dispatch(fetchDrinksRecipes());
+    dispatch(fetchDrinksCategories());
   }, [dispatch]);
 
   useEffect(() => {
-    saveDrinks();
-  }, [saveDrinks]);
+    saveDrinksAndCategories();
+  }, [saveDrinksAndCategories]);
 
   return (
     <div>
