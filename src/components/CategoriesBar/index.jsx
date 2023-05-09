@@ -15,6 +15,7 @@ function CategoriesBar({ mealsCategories = [], drinksCategories = [] }) {
           key={ `category-${category.strCategory}-${i}` }
           data-testid={ `${category.strCategory}-category-filter>` }
           className="bg-violet-900 text-white px-2 py-1 rounded-md"
+          value={ category.strCategory }
         >
           {category.strCategory}
         </button>
