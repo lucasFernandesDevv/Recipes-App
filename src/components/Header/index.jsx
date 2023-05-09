@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom';
 import { UserCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { ForkKnife } from '@phosphor-icons/react';
 import './Header.css';

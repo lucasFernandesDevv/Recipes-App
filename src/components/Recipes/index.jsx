@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types';
+import { useHistory, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import {
-  useHistory,
-  useParams,
-} from 'react-router-dom/cjs/react-router-dom.min';
 import RecipeCard from '../RecipeCard';
 import CategoriesBar from '../CategoriesBar';
 
