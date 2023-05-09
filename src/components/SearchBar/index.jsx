@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import useFetch from '../../hooks/useFetch';
-import { addRecipes } from '../../redux/actions';
+import { saveDrinks, saveMeals } from '../../redux/actions';
 
 const firstLetter = 'first-letter';
 
@@ -66,23 +66,27 @@ function SearchBar({ dispatch }) {
       global.alert('Your search must have only 1 (one) character');
       return;
     }
-    let recipe = '';
-    let id = '';
     if (pathname === '/meals') {
-      recipe = await handleMeals();
-      if (!recipe) {
+      const filteredRecipes = await handleMeals();
+      if (!filteredRecipes) {
         return;
       }
-      id = recipe[0].idMeal;
+      if (filteredRecipes.length === 1) {
+        const id = filteredRecipes[0].idMeal;
+        history.push(`${pathname}/${id}`);
+      }
+      dispatch(saveMeals(filteredRecipes));
     } if (pathname === '/drinks') {
-      recipe = await handleDrinks();
-      if (!recipe) {
+      const filteredRecipes = await handleDrinks();
+      if (!filteredRecipes) {
         return;
       }
-      id = recipe[0].idDrink;
+      if (filteredRecipes.length === 1) {
+        const id = filteredRecipes[0].idDrink;
+        history.push(`${pathname}/${id}`);
+      }
+      dispatch(saveDrinks(filteredRecipes));
     }
-    dispatch(addRecipes(recipe));
-    if (recipe && recipe.length === 1) history.push(`${pathname}/${id}`);
   };
 
   return (
