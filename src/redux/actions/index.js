@@ -3,6 +3,8 @@ import {
   SAVE_MEALS,
   SAVE_DRINKS_CATEGORIES,
   SAVE_MEALS_CATEGORIES,
+  SAVE_FILTERED_DRINKS_BY_CATEGORY,
+  SAVE_FILTERED_MEALS_BY_CATEGORY,
 } from '../helpers/variables';
 
 // Coloque aqui suas actions
@@ -23,6 +25,16 @@ export const saveMealsCategories = (payload) => ({
 
 export const saveDrinksCategories = (payload) => ({
   type: SAVE_DRINKS_CATEGORIES,
+  payload,
+});
+
+export const saveFilteredMealsByCategory = (payload) => ({
+  type: SAVE_FILTERED_MEALS_BY_CATEGORY,
+  payload,
+});
+
+export const saveFilteredDrinksByCategory = (payload) => ({
+  type: SAVE_FILTERED_DRINKS_BY_CATEGORY,
   payload,
 });
 
@@ -63,5 +75,25 @@ export function fetchDrinksCategories() {
     );
     const data = await response.json();
     dispatch(saveDrinksCategories(data.drinks));
+  };
+}
+
+export function fetchMealsByCategory(category) {
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`,
+    );
+    const data = await response.json();
+    dispatch(saveFilteredMealsByCategory(data.meals));
+  };
+}
+
+export function fetchDrinksByCategory(category) {
+  return async (dispatch) => {
+    const response = await fetch(
+      `https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`,
+    );
+    const data = await response.json();
+    dispatch(saveFilteredDrinksByCategory(data.drinks));
   };
 }
