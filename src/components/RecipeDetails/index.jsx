@@ -14,28 +14,16 @@ export default function RecipeDetails() {
 
   const [urlVideo, setUrlVideo] = useState('');
 
-  let params = {};
-  if (location.pathname.includes('meals')) {
-    params = {
-      type: 'meals',
-      id: 'idMeal',
-      video: 'strYoutube',
-      name: 'strMeal',
-      img: 'strMealThumb',
-      category: 'strCategory',
-      instructions: 'strInstructions',
-    };
-  } else {
-    params = {
-      type: 'drinks',
-      id: 'idDrink',
-      video: 'strVideo',
-      name: 'strDrink',
-      img: 'strDrinkThumb',
-      category: 'strAlcoholic',
-      instructions: 'strInstructions',
-    };
-  }
+  const params = {
+    type: location.pathname.includes('meals') ? 'meals' : 'drinks',
+    id: location.pathname.includes('meals') ? 'idMeal' : 'idDrink',
+    video: location.pathname.includes('meals') ? 'strYoutube' : 'strVideo',
+    name: location.pathname.includes('meals') ? 'strMeal' : 'strDrink',
+    img: location.pathname.includes('meals') ? 'strMealThumb' : 'strDrinkThumb',
+    category: location.pathname.includes('meals') ? 'strCategory' : 'strAlcoholic',
+    instructions: location.pathname.includes('meals')
+      ? 'strInstructions' : 'strInstructions',
+  };
 
   useEffect(() => {
     let result = [];
