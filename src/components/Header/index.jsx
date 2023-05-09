@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import iconProfile from '../../images/profileIcon.svg';
-import searchBtn from '../../images/searchIcon.svg';
+import { UserCircleIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { ForkKnife } from '@phosphor-icons/react';
 import './Header.css';
 import SearchBar from '../SearchBar';
 
@@ -22,41 +22,48 @@ function Header({ title }) {
   };
 
   return (
-    <div className="border-b border-gray-900/10 items-center pb-12">
-      <div>
+    <div className="flex flex-col gap-4 mb-4 items-center">
+      <div
+        className="
+          bg-violet-900 w-full
+          text-white py-2 px-3 flex
+          items-center justify-center
+        "
+      >
+        <h2 className="text-lg font-larger italic">
+          RECIPES
+          {' '}
+          <span className="font-extrabold not-italic">app</span>
+        </h2>
+        <div className="flex gap-2 absolute right-3">
+          <UserCircleIcon
+            onClickCapture={ handlePerfil }
+            data-testid="profile-top-btn"
+            src="profileIcon"
+            alt="profile-icon"
+            className="w-8 h-8"
+          />
+          {(title === 'Drinks' || title === 'Meals') && (
+            <MagnifyingGlassIcon
+              onClickCapture={ (e) => changeBar(e) }
+              data-testid="search-top-btn"
+              src="searchIcon"
+              alt="search-top-btn"
+              className="w-8 h-8"
+            />
+          )}
+        </div>
+      </div>
+      <div className="flex flex-col items-center gap-2">
+        <ForkKnife size={ 54 } weight="fill" className="text-yellow-400" />
         <h1
+          className="text-violet-800 font-extrabold text-4xl capitalize"
           data-testid="page-title"
-          className="bg-violet-900 text-white rounded-md px-3
-          py-2 relative ml-0 items-center
-          mt-0 text-center
-          text-5xl font-larger"
         >
-          { title }
+          {title}
         </h1>
       </div>
-      <div className="space-y-12">
-        <img
-          className="ml-2 my-2"
-          onClickCapture={ handlePerfil }
-          data-testid="profile-top-btn"
-          src={ iconProfile }
-          alt="profile-icon"
-        />
-        { (title === 'Drinks' || title === 'Meals')
-        && (
-          <button
-            onClick={ (e) => changeBar(e) }
-          >
-            <img
-              className="ml-2 my-2"
-              data-testid="search-top-btn"
-              src={ searchBtn }
-              alt="search-top-btn"
-            />
-          </button>
-        )}
-        { showBar && <SearchBar /> }
-      </div>
+      {showBar && <SearchBar />}
     </div>
   );
 }

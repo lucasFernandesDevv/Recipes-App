@@ -1,64 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import React from 'react';
+import { connect } from 'react-redux';
+import {
+  useHistory,
+  useParams,
+} from 'react-router-dom/cjs/react-router-dom.min';
+import RecipeCard from '../RecipeCard';
 
-const MAGIC_SLICE = 12;
-
-function Recipes({ recipes }) {
-  const { location } = useHistory();
-  const [actRecipes, setActRecipes] = useState([]);
-  const [params, setParams] = useState({
-    img: '',
-    name: '',
-    id: '',
-  });
-
-  useEffect(() => {
-    if (location.pathname === '/meals') {
-      setParams({
-        id: 'idMeal',
-        img: 'strMealThumb',
-        name: 'strMeal',
-      });
-    } else {
-      setParams({
-        id: 'idDrink',
-        img: 'strDrinkThumb',
-        name: 'strDrink',
-      });
-    }
-    setActRecipes(recipes.slice(0, MAGIC_SLICE));
-  }, [location.pathname, recipes]);
+function Recipes({ recipes = [] }) {
+  const { id } = useParams();
+  const { location: { pathname } } = useHistory();
 
   return (
-    <div>
-      { actRecipes?.map((recipe, index) => (
-        <div data-testid={ `${index}-recipe-card` } key={ recipe[params.id] }>
-          <img
-            className="max-h-16 max-w-16"
-            data-testid={ `${index}-card-img` }
-            src={ recipe[params.img] }
-            alt={ recipe[params.img] }
-          />
-          <p
-            data-testid={ `${index}-card-name` }
-            className="text-red-800 text-4xl"
-          >
-            {recipe[params.name]}
-          </p>
-        </div>
-      ))}
+    <div className="flex justify-center gap-2 flex-wrap">
+      {pathname.includes('meals')
+        ? recipes.meals.map(
+          ({ idMeal, strMeal, strMealThumb }, i) => (
+            <RecipeCard
+              key={ idMeal }
+              name={ strMeal }
+              thumb={ strMealThumb }
+              index={ i }
+            />
+          ),
+        )
+        : recipes.drinks.map(
+          ({ idDrink, strDrink, strDrinkThumb }, i) => (
+            <RecipeCard
+              key={ idDrink }
+              name={ strDrink }
+              thumb={ strDrinkThumb }
+              index={ i }
+            />
+          ),
+        )}
+      {id ?? ''}
     </div>
   );
 }
 
 const mapStateToProps = ({ recipes }) => ({
-  recipes: recipes.recipes,
+  recipes,
 });
 
 Recipes.propTypes = {
-  recipes: PropTypes.arrayOf(PropTypes.shape()).isRequired,
+  recipes: PropTypes.shape({}),
 };
 
 export default connect(mapStateToProps)(Recipes);

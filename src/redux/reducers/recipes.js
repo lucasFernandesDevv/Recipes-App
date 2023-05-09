@@ -1,19 +1,27 @@
-// Esse reducer será responsável por tratar as informações da pessoa usuária
-
-import { RECIPES_ADD } from '../helpers/variables';
+import { SAVE_DRINKS, SAVE_MEALS } from '../helpers/variables';
 
 const INITIAL_STATE = {
-  recipes: [],
+  meals: [],
+  drinks: [],
 };
 
-const recipes = (state = INITIAL_STATE, { type, recipe }) => {
+const maxRecipes = 12;
+
+const recipes = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
-  case RECIPES_ADD:
+  case SAVE_DRINKS:
     return {
-      recipes: recipe,
+      ...state,
+      drinks: payload.filter((_, index) => index < maxRecipes),
+    };
+  case SAVE_MEALS:
+    return {
+      ...state,
+      meals: payload.filter((_, index) => index < maxRecipes),
     };
   default:
     return state;
   }
 };
+
 export default recipes;
