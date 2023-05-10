@@ -3,7 +3,7 @@ import { act, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import renderWithRouter, { renderWithRouterAndRedux } from './helpers/RenderWithRouter';
-import { myHistory, recipes } from './helpers/initialState';
+import { myHistory, initialState } from './helpers/initialState';
 
 describe('Testes da tela de login', () => {
   it('Deve renderizar a tela de login corretamente', () => {
@@ -60,7 +60,7 @@ describe('Testes da tela de login', () => {
   it('Salva o email do usuário na localStorage após o login', () => {
     const userTestEmail = 'test@trybe.com';
 
-    renderWithRouterAndRedux(<App />, recipes);
+    renderWithRouterAndRedux(<App />, initialState);
 
     const emailInputElement = screen.getByPlaceholderText(/email/i);
     const passwordInputElement = screen.getByPlaceholderText(/password/i);
@@ -81,7 +81,7 @@ describe('Testes da tela de login', () => {
     // const { history } = renderWithRouter(<App />);
     const { history } = renderWithRouterAndRedux(<App
       history={ myHistory }
-    />, recipes);
+    />, initialState);
 
     const emailInputElement = screen.getByPlaceholderText(/email/i);
     const passwordInputElement = screen.getByPlaceholderText(/password/i);

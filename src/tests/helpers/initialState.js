@@ -1,14 +1,32 @@
-export const recipes = {
+export const initialState = {
   meals: [],
   drinks: [],
   mealsCategories: [
-  //   { strCategory: 'Beef' },
-  //   { strCategory: 'Breakfast' },
-  //   { strCategory: 'Chicken' },
-  //   { strCategory: 'Dessert' },
-  //   { strCategory: 'Goat' },
+    { strCategory: 'Beef' },
+    { strCategory: 'Breakfast' },
+    { strCategory: 'Chicken' },
+    { strCategory: 'Dessert' },
+    { strCategory: 'Goat' },
   ],
-  drinksCategories: [],
+  drinksCategories: [
+    {
+      strCategory: 'Ordinary Drink',
+    },
+    {
+      strCategory: 'Cocktail',
+    },
+    {
+      strCategory: 'Shake',
+    },
+    {
+      strCategory: 'Other/Unknown',
+    },
+    {
+      strCategory: 'Cocoa',
+    },
+    {
+      strCategory: 'Shot' },
+  ],
   filteredMealsByCategory: [],
   filteredDrinksByCategory: [],
 };
