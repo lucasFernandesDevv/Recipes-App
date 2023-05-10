@@ -29,13 +29,9 @@ function SearchBar({ dispatch }) {
         `https://www.themealdb.com/api/json/v1/1/filter.php?i=${filter}`,
       );
     } else if (search === 'first-letter') {
-      results = await fetchData(
-        `https://www.themealdb.com/api/json/v1/1/search.php?f=${filter}`,
-      );
+      results = await fetchData(`https://www.themealdb.com/api/json/v1/1/search.php?f=${filter}`);
     } else {
-      results = await fetchData(
-        `https://www.themealdb.com/api/json/v1/1/search.php?s=${filter}`,
-      );
+      results = await fetchData(`https://www.themealdb.com/api/json/v1/1/search.php?s=${filter}`);
     }
     if (!results.meals) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
@@ -45,7 +41,7 @@ function SearchBar({ dispatch }) {
   };
 
   const handleDrinks = async () => {
-    let results = '';
+    let results = [];
     if (search === 'ingredient') {
       results = await fetchData(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${filter}`);
     } else if (search === firstLetter) {
