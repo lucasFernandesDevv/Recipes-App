@@ -1,71 +1,52 @@
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import RecipeCard from '../RecipeCard';
+import useFetch from '../../hooks/useFetch';
 
-function Carousel({
-  meals,
-  drinks,
-  filteredMealsByCategory,
-  filteredDrinksByCategory,
-}) {
-  const {
-    location: { pathname },
-  } = useHistory();
+const URL_DRINKS_API = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+const URL_MEALS_API = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+const MAX_RECOMMEND = 6;
 
-  const currentCategory = pathname === '/drinks'
-    ? filteredDrinksByCategory : filteredMealsByCategory;
+export default function Carousel() {
+  const { fetchData } = useFetch();
+  const { location } = useHistory();
+  const [recommends, setRecommends] = useState([]);
 
-  const [hasFilterByCategory, setHasFilterByCategory] = useState(false);
+  const params = {
+    type: location.pathname.includes('drinks') ? 'meals' : 'drinks',
+    id: location.pathname.includes('drinks') ? 'idMeal' : 'idDrink',
+    video: location.pathname.includes('drinks') ? 'strYoutube' : 'strVideo',
+    name: location.pathname.includes('drinks') ? 'strMeal' : 'strDrink',
+    img: location.pathname.includes('drinks') ? 'strMealThumb' : 'strDrinkThumb',
+    category: location.pathname.includes('drinks') ? 'strCategory' : 'strAlcoholic',
+    instructions: location.pathname.includes('drinks')
+      ? 'strInstructions' : 'strInstructions',
+  };
 
   useEffect(() => {
-    setHasFilterByCategory(currentCategory.length > 0);
-  }, [currentCategory]);
+    const handleMeals = async () => {
+      const { pathname } = location;
+      let results;
+      if (pathname.includes('drinks')) {
+        results = await fetchData(URL_MEALS_API);
+      } else {
+        results = await fetchData(URL_DRINKS_API);
+      }
+      setRecommends([...results[params.type]
+        .filter((type, index) => index < MAX_RECOMMEND)]);
+    };
+    handleMeals();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="flex justify-center gap-2 flex-wrap">
-      {pathname.includes('meals')
-        ? (hasFilterByCategory ? filteredMealsByCategory : drinks).map(
-          ({ idMeal, strMeal, strMealThumb }, i) => (
-            <RecipeCard
-              key={ idMeal }
-              id={ idMeal }
-              name={ strMeal }
-              thumb={ strMealThumb }
-              index={ i }
-            />
-          ),
-        )
-        : (hasFilterByCategory ? filteredDrinksByCategory : meals).map(
-          ({ idDrink, strDrink, strDrinkThumb }, i) => (
-            <RecipeCard
-              key={ idDrink }
-              id={ idDrink }
-              name={ strDrink }
-              thumb={ strDrinkThumb }
-              index={ i }
-            />
-          ),
-        )}
-    </div>
+    <>
+      {
+        recommends.map((recommend) => (
+          <div key={ recommend[params.type] }>
+            <p>{recommend[params.name]}</p>
+          </div>
+        ))
+      }
+    </>
   );
 }
-
-const mapStateToProps = ({
-  recipes: { meals, drinks, filteredMealsByCategory, filteredDrinksByCategory },
-}) => ({
-  meals,
-  drinks,
-  filteredMealsByCategory,
-  filteredDrinksByCategory,
-});
-
-Carousel.propTypes = {
-  drinks: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  filteredDrinksByCategory: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  filteredMealsByCategory: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  meals: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-};
-
-export default connect(mapStateToProps)(Carousel);

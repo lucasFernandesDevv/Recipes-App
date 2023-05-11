@@ -1,6 +1,7 @@
 import { useParams, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useFetch from '../../hooks/useFetch';
+import Carousel from '../Carousel';
 
 const URL_API_MEALS = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const URL_API_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
@@ -102,6 +103,7 @@ export default function RecipeDetails() {
           gyroscope; picture-in-picture; web-share"
         allowFullScreen
       />
+      <Carousel />
     </div>
   );
 }
