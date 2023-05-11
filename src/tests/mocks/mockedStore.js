@@ -1,3 +1,8 @@
+const ordinaryDrink = 'Ordinary Drink';
+const grandMarnier = 'Grand Marnier';
+const shotGlass = 'Shot glass';
+const baileys = 'Baileys Irish Cream';
+
 export const mockedStore = {
   recipes: {
     meals: [
@@ -699,7 +704,7 @@ export const mockedStore = {
         strDrinkAlternate: null,
         strTags: null,
         strVideo: null,
-        strCategory: 'Ordinary Drink',
+        strCategory: ordinaryDrink,
         strIBA: null,
         strAlcoholic: 'Optional alcohol',
         strGlass: 'Collins Glass',
@@ -774,7 +779,7 @@ export const mockedStore = {
         strDrinkThumb:
           'https://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg',
         strIngredient1: 'Gin',
-        strIngredient2: 'Grand Marnier',
+        strIngredient2: grandMarnier,
         strIngredient3: 'Lemon Juice',
         strIngredient4: 'Grenadine',
         strIngredient5: null,
@@ -817,20 +822,20 @@ export const mockedStore = {
         strCategory: 'Shot',
         strIBA: null,
         strAlcoholic: 'Alcoholic',
-        strGlass: 'Shot glass',
-        strInstructions: 'Layered in a shot glass.',
+        strGlass: shotGlass,
+        strInstructions: 'Layered in ashotGlass',
         strInstructionsES:
           'Coloque todos los ingredientes en un vaso de chupito.',
         strInstructionsDE: 'Schichtaufbau in einem Schnapsglas.',
         strInstructionsFR: null,
         strInstructionsIT:
-          "Versa in ordine di lettera i vari ingredienti. 1/3 del bicchiere va riempito con l'Amaretto, 1/3 di Baileys e il restante di Cognac.",
+          'Versa in ordine di lettera i vari ingredienti. 1/3 del bicchiere va riempito con l\'Amaretto, 1/3 di Baileys e il restante di Cognac.',
         'strInstructionsZH-HANS': null,
         'strInstructionsZH-HANT': null,
         strDrinkThumb:
           'https://www.thecocktaildb.com/images/media/drink/tqpvqp1472668328.jpg',
         strIngredient1: 'Amaretto',
-        strIngredient2: 'Baileys irish cream',
+        strIngredient2: baileys,
         strIngredient3: 'Cognac',
         strIngredient4: null,
         strIngredient5: null,
@@ -870,7 +875,7 @@ export const mockedStore = {
         strDrinkAlternate: null,
         strTags: 'IBA,ContemporaryClassic',
         strVideo: null,
-        strCategory: 'Ordinary Drink',
+        strCategory: ordinaryDrink,
         strIBA: null,
         strAlcoholic: 'Alcoholic',
         strGlass: 'Wine Glass',
@@ -930,7 +935,7 @@ export const mockedStore = {
         strCategory: 'Shot',
         strIBA: null,
         strAlcoholic: 'Alcoholic',
-        strGlass: 'Shot glass',
+        strGlass: shotGlass,
         strInstructions:
           'pour kaluha, then Baileys, then Frangelico not chilled and not layered -- SERVE!!!',
         strInstructionsES: null,
@@ -943,7 +948,7 @@ export const mockedStore = {
         strDrinkThumb:
           'https://www.thecocktaildb.com/images/media/drink/xxsxqy1472668106.jpg',
         strIngredient1: 'Kahlua',
-        strIngredient2: 'Baileys irish cream',
+        strIngredient2: baileys,
         strIngredient3: 'Frangelico',
         strIngredient4: null,
         strIngredient5: null,
@@ -986,9 +991,9 @@ export const mockedStore = {
         strCategory: 'Shot',
         strIBA: null,
         strAlcoholic: 'Alcoholic',
-        strGlass: 'Shot glass',
+        strGlass: shotGlass,
         strInstructions:
-          'Add both ingredients to shot glass, shoot, and get drunk quick',
+          'Add both ingredients toshotGlass shoot, and get drunk quick',
         strInstructionsES: null,
         strInstructionsDE: 'Beide Zutaten in ein Schnapsglas geben.',
         strInstructionsFR: null,
@@ -1097,7 +1102,7 @@ export const mockedStore = {
         strDrinkAlternate: null,
         strTags: 'Alcoholic,Holiday',
         strVideo: null,
-        strCategory: 'Ordinary Drink',
+        strCategory: ordinaryDrink,
         strIBA: null,
         strAlcoholic: 'Alcoholic',
         strGlass: 'Cocktail glass',
@@ -1166,14 +1171,14 @@ export const mockedStore = {
           'Schichte die Kahlua, Sambucca und Grand Marnier in dieser Reihenfolge in ein Schnapsglas ein. Besser als B-52',
         strInstructionsFR: null,
         strInstructionsIT:
-          "Metti Kahlua, Sambuca e Grand Marnier in un bicchierino in quest'ordine. ",
+          'Metti Kahlua, Sambuca e Grand Marnier in un bicchierino in quest\'ordine. ',
         'strInstructionsZH-HANS': null,
         'strInstructionsZH-HANT': null,
         strDrinkThumb:
           'https://www.thecocktaildb.com/images/media/drink/rwqxrv1461866023.jpg',
         strIngredient1: 'Kahlua',
         strIngredient2: 'Sambuca',
-        strIngredient3: 'Grand Marnier',
+        strIngredient3: grandMarnier,
         strIngredient4: null,
         strIngredient5: null,
         strIngredient6: null,
@@ -1212,7 +1217,7 @@ export const mockedStore = {
         strDrinkAlternate: null,
         strTags: null,
         strVideo: null,
-        strCategory: 'Ordinary Drink',
+        strCategory: ordinaryDrink,
         strIBA: null,
         strAlcoholic: 'Alcoholic',
         strGlass: 'Highball Glass',
@@ -1223,7 +1228,7 @@ export const mockedStore = {
           'Wodka und Gin über das Eis gießen, Tonic hinzufügen und umrühren.',
         strInstructionsFR: null,
         strInstructionsIT:
-          "Versare la vodka e il gin sul ghiaccio, aggiungere l'acqua tonica e mescolare",
+          'Versare la vodka e il gin sul ghiaccio, aggiungere l\'acqua tonica e mescolare',
         'strInstructionsZH-HANS': null,
         'strInstructionsZH-HANT': null,
         strDrinkThumb:
@@ -1272,7 +1277,7 @@ export const mockedStore = {
         strCategory: 'Shot',
         strIBA: null,
         strAlcoholic: 'Alcoholic',
-        strGlass: 'Shot glass',
+        strGlass: shotGlass,
         strInstructions:
           'Poor in the 151 first followed by the 101 served with a Coke or Dr Pepper chaser.',
         strInstructionsES:
