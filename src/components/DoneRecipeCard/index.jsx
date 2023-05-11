@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
+import { useHistory } from 'react-router-dom';
 
 export function DoneRecipeCard({
   index = 0,
@@ -14,25 +15,44 @@ export function DoneRecipeCard({
   id = '',
 }) {
   const [isRecipeCopied, setIsRecipeCopied] = useState();
+  const history = useHistory();
+  const doneRecipesPath = 'done-recipes';
 
   function handleShareButton() {
     const url = window.location.href;
     if (recipeType === 'meals') {
-      url.replace('done-recipes', `meals/${id}`);
+      url.replace(doneRecipesPath, `meals/${id}`);
       clipboardCopy(url);
     } else {
-      url.replace('done-recipes', `drinks/${id}`);
+      url.replace(doneRecipesPath, `drinks/${id}`);
       clipboardCopy(url);
     }
     setIsRecipeCopied(true);
   }
 
+  function redirectToDetails() {
+    const actualUrl = window.location.href;
+    const redirectUrl = recipeType === 'meals' ? `/meals/${id}` : `/drinks/${id}`;
+    const newUrl = actualUrl.replace(doneRecipesPath, redirectUrl);
+    history.push(newUrl);
+  }
+
   return (
     <div>
-      <img src="" alt="" data-testid={ `${index}-horizontal-image` } />
+      <img
+        src=""
+        alt=""
+        data-testid={ `${index}-horizontal-image` }
+        onClickCapture={ redirectToDetails }
+      />
       <div>
         <div>
-          <h2 data-testid={ `${index}-horizontal-name` }>{name}</h2>
+          <h2
+            data-testid={ `${index}-horizontal-name` }
+            onClickCapture={ redirectToDetails }
+          >
+            {name}
+          </h2>
           <span data-testid={ `${index}-horizontal-top-text` }>
             {`${nationality} - ${category}`}
             {isAlcoholic ? 'Alcoholic' : ''}
