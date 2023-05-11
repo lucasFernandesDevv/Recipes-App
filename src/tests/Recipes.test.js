@@ -3,9 +3,11 @@ import userEvent from '@testing-library/user-event';
 import { renderWithRouterAndRedux } from './helpers/RenderWithRouter';
 import App from '../App';
 import { mockedStore } from './mocks/mockedStore';
-import { recipes } from './helpers/initialState';
+import { mockFetch } from './helpers/mockFetch';
+import { initialState } from './helpers/initialState';
 
 describe('Recipes screen tests', () => {
+  const allCategoriesTestid = 'All-category-filter';
   it('Renders the screen with the correct elements for meals route', async () => {
     global.fetch = jest.fn(() => Promise.resolve({
       json: () => Promise.resolve({
@@ -13,7 +15,7 @@ describe('Recipes screen tests', () => {
         mealsCategories: mockedStore.recipes.mealsCategories,
       }),
     }));
-    const mockedInitialState = { recipes };
+    const mockedInitialState = { initialState };
 
     const { history } = renderWithRouterAndRedux(
       <App />,
@@ -34,7 +36,7 @@ describe('Recipes screen tests', () => {
     expect(global.fetch).toHaveBeenCalled();
 
     const corbaRecipe = await screen.findByText(/corba/i);
-    const categoryButton = screen.getByTestId('All-category-filter');
+    const categoryButton = screen.getByTestId(allCategoriesTestid);
 
     expect(corbaRecipe).toBeInTheDocument();
     expect(categoryButton).toBeInTheDocument();
@@ -52,7 +54,7 @@ describe('Recipes screen tests', () => {
         drinksCategories: mockedStore.recipes.drinksCategories,
       }),
     }));
-    const mockedInitialState = { recipes };
+    const mockedInitialState = { initialState };
 
     const { history } = renderWithRouterAndRedux(
       <App />,
@@ -73,7 +75,7 @@ describe('Recipes screen tests', () => {
     expect(global.fetch).toHaveBeenCalled();
 
     const ggRecipe = await screen.findByText(/gg/i);
-    const categoryButton = screen.getByTestId('All-category-filter');
+    const categoryButton = screen.getByTestId(allCategoriesTestid);
 
     expect(ggRecipe).toBeInTheDocument();
     expect(categoryButton).toBeInTheDocument();
@@ -84,35 +86,63 @@ describe('Recipes screen tests', () => {
 
     expect(pathname).toBe('/drinks/15997');
   });
-  it('Renders the correct elements when has a category filter applied', async () => {
-    global.fetch = jest.fn(() => Promise.resolve({
-      json: () => Promise.resolve({
-        meals: mockedStore.recipes.meals,
-        mealsCategories: mockedStore.recipes.mealsCategories,
-        filteredMealsByCategory: mockedStore.recipes.filteredMealsByCategory,
-      }),
-    }));
-    const mockedInitialState = { recipes };
-
-    const { history } = renderWithRouterAndRedux(
+  it('Renders the correct elements when has a category filter applied, meals', async () => {
+    mockFetch();
+    renderWithRouterAndRedux(
       <App />,
-      mockedInitialState,
+      initialState,
       '/meals',
     );
 
-    const corbaRecipe = await screen.findByText(/corba/i);
-    expect(corbaRecipe).toBeInTheDocument();
-
-    const beefCategoryButton = await screen.findByTestId('Beef-category-filter');
-    const categoryButtonAll = screen.getByTestId('All-category-filter');
+    const chickenCategoryButton = await screen.findByTestId('Chicken-category-filter');
+    const categoryButtonAll = screen.getByTestId(allCategoriesTestid);
 
     expect(categoryButtonAll).toBeInTheDocument();
-    expect(beefCategoryButton).toBeInTheDocument();
+    expect(chickenCategoryButton).toBeInTheDocument();
 
     act(() => {
-      userEvent.click(beefCategoryButton);
+      userEvent.click(chickenCategoryButton);
     });
 
-    expect(global.fetch).toHaveBeenCalled();
+    const chickenRecipe = await screen.findByText(/brown/i);
+
+    expect(chickenRecipe).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(categoryButtonAll);
+    });
+
+    const corbaRecipe = await screen.findByText(/corba/i);
+    expect(corbaRecipe).toBeInTheDocument();
+  });
+
+  it('Renders the correct elements when has a category filter applied, drinks', async () => {
+    mockFetch();
+    renderWithRouterAndRedux(
+      <App />,
+      initialState,
+      '/drinks',
+    );
+
+    const cocktailCategoryButton = await screen.findByTestId('Cocktail-category-filter');
+    const categoryButtonAll = screen.getByTestId(allCategoriesTestid);
+
+    expect(categoryButtonAll).toBeInTheDocument();
+    expect(cocktailCategoryButton).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(cocktailCategoryButton);
+    });
+
+    const cocktailRecipe = await screen.findByText(/155/i);
+
+    expect(cocktailRecipe).toBeInTheDocument();
+
+    act(() => {
+      userEvent.click(categoryButtonAll);
+    });
+
+    const ggRecipe = await screen.findByText(/gg/i);
+    expect(ggRecipe).toBeInTheDocument();
   });
 });
