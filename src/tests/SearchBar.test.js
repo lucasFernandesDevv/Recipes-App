@@ -4,6 +4,8 @@ import { renderWithRouterAndRedux } from './helpers/RenderWithRouter';
 import { initialState } from './helpers/initialState';
 import { mockFetch } from './helpers/mockFetch';
 import App from '../App';
+import { mockFirst } from './helpers/mockFirst';
+import SearchBar from '../components/SearchBar';
 
 const searchTopBtn = 'search-top-btn';
 const searchInpt = 'search-input';
@@ -167,13 +169,13 @@ describe('Test SearchBar in Drinks', () => {
 });
 describe('Render first letter', () => {
   beforeEach(() => {
-    mockFetch();
+    mockFirst();
+  });
+  afterEach(() => {
+    jest.clearAllMocks();
   });
   it('If Render in Meal by first Letter', async () => {
-    renderWithRouterAndRedux(<App />, initialState, '/meals');
-    const searchImg = screen.getByTestId(searchTopBtn);
-
-    userEvent.click(searchImg);
+    renderWithRouterAndRedux(<SearchBar />, {}, '/meals');
 
     const name = screen.getByRole('radio', {
       name: /first letter/i,
@@ -189,10 +191,7 @@ describe('Render first letter', () => {
     userEvent.click(search);
   });
   it('If Render in Drinks by first Letter', async () => {
-    renderWithRouterAndRedux(<App />, initialState, '/drinks');
-    const searchImg = screen.getByTestId(searchTopBtn);
-
-    userEvent.click(searchImg);
+    renderWithRouterAndRedux(<SearchBar />, {}, '/drinks');
 
     const name = screen.getByRole('radio', {
       name: /first letter/i,

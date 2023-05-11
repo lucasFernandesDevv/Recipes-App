@@ -1,4 +1,4 @@
-const mockDataFirstLetter = {
+export const mealFirstLetter = {
   meals: [
     {
       idMeal: '52978',
@@ -214,5 +214,3 @@ const mockDataFirstLetter = {
     },
   ],
 };
-
-module.exports = mockDataFirstLetter;
