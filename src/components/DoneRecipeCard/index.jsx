@@ -8,6 +8,7 @@ export function DoneRecipeCard({
   tags = [],
   nationality = '',
   category = '',
+  isAlcoholic = false,
 }) {
   return (
     <div>
@@ -17,6 +18,7 @@ export function DoneRecipeCard({
           <h2 data-testid={ `${index}-horizontal-name` }>{name}</h2>
           <span data-testid={ `${index}-horizontal-top-text` }>
             {`${nationality} - ${category}`}
+            {isAlcoholic ? 'Alcoholic' : ''}
           </span>
         </div>
         <button data-testid={ `${index}-horizontal-share-btn` }>Share</button>
@@ -40,4 +42,5 @@ DoneRecipeCard.propTypes = {
   name: PropTypes.string,
   nationality: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
+  isAlcoholic: PropTypes.bool,
 };
