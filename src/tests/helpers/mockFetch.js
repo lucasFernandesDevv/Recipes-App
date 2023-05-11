@@ -6,5 +6,6 @@
 import fetch from '../../../cypress/mocks/fetch';
 
 export const mockFetch = () => {
+  console.log('oi');
   jest.spyOn(global, 'fetch').mockImplementation(fetch);
 };
