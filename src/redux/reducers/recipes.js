@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   drinksCategories: [],
   filteredMealsByCategory: [],
   filteredDrinksByCategory: [],
+  doneRecipes: [],
 };
 
 const maxRecipes = 12;
