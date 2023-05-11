@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 function Profile() {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const [user, setUser] = useState('');
+
+  useEffect(() => {
+    const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+
+    if (userFromLocalStorage) {
+      setUser(userFromLocalStorage);
+    } else {
+      setUser({ email: '' });
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -15,7 +25,7 @@ function Profile() {
       <Header title="Profile" />
       <div>
         <span data-testid="profile-email">
-          {user.email}
+          {user?.email}
         </span>
         <section>
           <Link to="/done-recipes">
