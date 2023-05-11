@@ -1,8 +1,8 @@
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types';
 import React from 'react';
 
 export function FilterButtons({ setFilteredDoneRecipes }) {
-  const buttonName = ['Meals', 'Drinks', 'All'];
+  const buttonName = ['Meals', 'Drinks'];
 
   function handleFilter(filter) {
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
@@ -12,20 +12,20 @@ export function FilterButtons({ setFilteredDoneRecipes }) {
 
   return (
     <div>
-      {buttonName.map((name, index) => (
+      {buttonName.map((name) => (
         <button
-          key={ `${index}-${name}` }
-          data-testid={ `${name}-filter` }
+          key={ `${name}-filter` }
           id={ name }
           onClick={ ({ target }) => handleFilter(target.id) }
         >
           {name}
         </button>
       ))}
+      <button onClick={ () => setFilteredDoneRecipes([]) }>All</button>
     </div>
   );
 }
 
 FilterButtons.propTypes = {
-  setFilteredDoneRecipes: PropTypes.func,
+  setFilteredDoneRecipes: PropTypes.func.isRequired,
 };
