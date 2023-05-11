@@ -31,6 +31,7 @@ function DoneRecipes() {
           ) => (
             <DoneRecipeCard
               key={ name }
+              name={ name }
               doneDate={ doneDate }
               tags={ tags }
               nationality={ nationality }

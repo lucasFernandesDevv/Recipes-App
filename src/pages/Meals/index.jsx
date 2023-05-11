@@ -18,6 +18,20 @@ export default function Meals() {
     saveMealsAndCategories();
   }, [saveMealsAndCategories]);
 
+  useEffect(() => {
+    const testRecipe = {
+      name: 'Test Recipe',
+      doneDate: '11/05/2023',
+      tags: ['test', 'recipe'],
+      nationality: 'Test Nation',
+      category: 'Test Category',
+      isAlcoholic: true,
+      recipeType: 'drinks',
+      id: '51147',
+    };
+    localStorage.setItem('doneRecipes', JSON.stringify([testRecipe]));
+  }, []);
+
   return (
     <div>
       <Header title="Meals" />

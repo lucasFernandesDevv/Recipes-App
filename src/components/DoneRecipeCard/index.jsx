@@ -19,13 +19,14 @@ export function DoneRecipeCard({
   const doneRecipesPath = 'done-recipes';
 
   function handleShareButton() {
-    const url = window.location.href;
     if (recipeType === 'meals') {
-      url.replace(doneRecipesPath, `meals/${id}`);
+      const url = window.location.href.replace(doneRecipesPath, `meals/${id}`);
       clipboardCopy(url);
+      console.log(url);
     } else {
-      url.replace(doneRecipesPath, `drinks/${id}`);
+      const url = window.location.href.replace(doneRecipesPath, `drinks/${id}`);
       clipboardCopy(url);
+      console.log(url);
     }
     setIsRecipeCopied(true);
   }
@@ -47,12 +48,12 @@ export function DoneRecipeCard({
       />
       <div>
         <div>
-          <h2
+          <button
             data-testid={ `${index}-horizontal-name` }
             onClickCapture={ redirectToDetails }
           >
             {name}
-          </h2>
+          </button>
           <span data-testid={ `${index}-horizontal-top-text` }>
             {`${nationality} - ${category}`}
             {isAlcoholic ? 'Alcoholic' : ''}
