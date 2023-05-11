@@ -9,7 +9,19 @@ function DoneRecipes() {
     <>
       <Header title="Done Recipes" />
       {doneRecipes.map(
-        ({ name, doneDate, tags, nationality, category, isAlcoholic }, i) => (
+        (
+          {
+            name,
+            doneDate,
+            tags,
+            nationality,
+            category,
+            isAlcoholic,
+            recipeType,
+            id,
+          },
+          i,
+        ) => (
           <DoneRecipeCard
             key={ name }
             doneDate={ doneDate }
@@ -17,6 +29,9 @@ function DoneRecipes() {
             nationality={ nationality }
             category={ category }
             isAlcoholic={ isAlcoholic }
+            recipeType={ recipeType }
+            index={ i }
+            id={ id }
           />
         ),
       )}

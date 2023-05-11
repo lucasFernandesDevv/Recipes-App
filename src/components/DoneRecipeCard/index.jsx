@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
+import clipboardCopy from 'clipboard-copy';
 
 export function DoneRecipeCard({
   index = 0,
@@ -9,7 +10,23 @@ export function DoneRecipeCard({
   nationality = '',
   category = '',
   isAlcoholic = false,
+  recipeType = '',
+  id = '',
 }) {
+  const [isRecipeCopied, setIsRecipeCopied] = useState();
+
+  function handleShareButton() {
+    const url = window.location.href;
+    if (recipeType === 'meals') {
+      url.replace('done-recipes', `meals/${id}`);
+      clipboardCopy(url);
+    } else {
+      url.replace('done-recipes', `drinks/${id}`);
+      clipboardCopy(url);
+    }
+    setIsRecipeCopied(true);
+  }
+
   return (
     <div>
       <img src="" alt="" data-testid={ `${index}-horizontal-image` } />
@@ -21,7 +38,12 @@ export function DoneRecipeCard({
             {isAlcoholic ? 'Alcoholic' : ''}
           </span>
         </div>
-        <button data-testid={ `${index}-horizontal-share-btn` }>Share</button>
+        <button
+          data-testid={ `${index}-horizontal-share-btn` }
+          onClick={ handleShareButton }
+        >
+          {isRecipeCopied ? 'Link copied!' : 'Share'}
+        </button>
       </div>
       <span data-testid={ `${index}-horizontal-done-date` }>{doneDate}</span>
       <div>
@@ -43,4 +65,6 @@ DoneRecipeCard.propTypes = {
   nationality: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
   isAlcoholic: PropTypes.bool,
+  recipeType: PropTypes.string,
+  id: PropTypes.string,
 };
