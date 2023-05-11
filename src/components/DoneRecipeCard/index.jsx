@@ -13,6 +13,7 @@ export function DoneRecipeCard({
   isAlcoholic = false,
   recipeType = '',
   id = '',
+  recipeImg = '',
 }) {
   const [isRecipeCopied, setIsRecipeCopied] = useState();
   const history = useHistory();
@@ -32,17 +33,15 @@ export function DoneRecipeCard({
   }
 
   function redirectToDetails() {
-    const actualUrl = window.location.href;
     const redirectUrl = recipeType === 'meals' ? `/meals/${id}` : `/drinks/${id}`;
-    const newUrl = actualUrl.replace(doneRecipesPath, redirectUrl);
-    history.push(newUrl);
+    history.push(redirectUrl);
   }
 
   return (
     <div>
       <img
-        src=""
-        alt=""
+        src={ recipeImg }
+        alt={ recipeImg }
         data-testid={ `${index}-horizontal-image` }
         onClickCapture={ redirectToDetails }
       />
@@ -88,4 +87,5 @@ DoneRecipeCard.propTypes = {
   isAlcoholic: PropTypes.bool,
   recipeType: PropTypes.string,
   id: PropTypes.string,
+  recipeImg: PropTypes.string,
 };

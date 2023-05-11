@@ -6,7 +6,7 @@ export function FilterButtons({ setFilteredDoneRecipes }) {
 
   function handleFilter(filter) {
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
-    const filteredRecipes = doneRecipes.filter(({ type }) => type === filter);
+    const filteredRecipes = doneRecipes.filter(({ recipeType }) => recipeType === filter);
     setFilteredDoneRecipes(filteredRecipes);
   }
 
@@ -15,7 +15,7 @@ export function FilterButtons({ setFilteredDoneRecipes }) {
       {buttonName.map((name) => (
         <button
           key={ `${name}-filter` }
-          id={ name }
+          id={ name.toLocaleLowerCase() }
           onClick={ ({ target }) => handleFilter(target.id) }
         >
           {name}

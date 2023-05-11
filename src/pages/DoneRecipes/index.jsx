@@ -26,6 +26,7 @@ function DoneRecipes() {
               isAlcoholic,
               recipeType,
               id,
+              recipeImg,
             },
             i,
           ) => (
@@ -40,6 +41,7 @@ function DoneRecipes() {
               recipeType={ recipeType }
               index={ i }
               id={ id }
+              recipeImg={ recipeImg }
             />
           ),
         )}
