@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
+import './Carousel.css';
 
 const URL_DRINKS_API = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 const URL_MEALS_API = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
@@ -39,14 +40,26 @@ export default function Carousel() {
   }, []);
 
   return (
-    <>
+    <div className="container-recommend">
       {
-        recommends.map((recommend) => (
-          <div key={ recommend[params.type] }>
-            <p>{recommend[params.name]}</p>
+        recommends.map((recommend, index) => (
+          <div
+            key={ recommend[params.id] }
+            data-testid={ `${index}-recommendation-card` }
+          >
+            <img
+              data-testid={ `${index}-card-img` }
+              src={ recommend[params.img] }
+              alt={ recommend[params.name] }
+            />
+            <h2
+              data-testid={ `${index}-recommendation-title` }
+            >
+              { recommend[params.name] }
+            </h2>
           </div>
         ))
       }
-    </>
+    </div>
   );
 }
