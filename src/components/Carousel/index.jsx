@@ -40,26 +40,32 @@ export default function Carousel() {
   }, []);
 
   return (
-    <div className="container-recommend">
-      {
-        recommends.map((recommend, index) => (
-          <div
-            key={ recommend[params.id] }
-            data-testid={ `${index}-recommendation-card` }
-          >
-            <img
-              data-testid={ `${index}-card-img` }
-              src={ recommend[params.img] }
-              alt={ recommend[params.name] }
-            />
-            <h2
-              data-testid={ `${index}-recommendation-title` }
+    <div className="container-recommended">
+      <span className="carousel-text">Recommended</span>
+      <div className="carousel-container">
+        {
+          recommends.map((recommend, index) => (
+            <div
+              key={ recommend[params.id] }
+              data-testid={ `${index}-recommendation-card` }
+              className="carousel-item"
             >
-              { recommend[params.name] }
-            </h2>
-          </div>
-        ))
-      }
+              <img
+                data-testid={ `${index}-card-img` }
+                className="recommend-img"
+                src={ recommend[params.img] }
+                alt={ recommend[params.name] }
+              />
+              <h2
+                data-testid={ `${index}-recommendation-title` }
+              >
+                { recommend[params.name] }
+              </h2>
+            </div>
+          ))
+        }
+      </div>
     </div>
+
   );
 }

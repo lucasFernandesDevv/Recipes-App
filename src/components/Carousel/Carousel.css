@@ -1,3 +1,46 @@
-.container-recommend{
+.container-recommended {
+  margin: 50px auto;
+  overflow: hidden;
+  width: 265px;
+}
 
+.carousel-item h2 {
+  margin-left: 5px;
+}
+
+.carousel-text {
+  font-weight: 700;
+  margin: 15px;
+}
+
+.carousel-container {
+  display: flex;
+  flex-direction: row;
+  height: auto;
+  margin: auto;
+  white-space: nowrap;
+  width: 265px;
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-item {
+  border: 3px solid rgba(130, 125, 125, 0.319);
+  border-radius: 5px;
+  margin: 3px 7px;
+  min-width: 120px;
+}
+
+.recommend-img {
+  border: none;
+  border-radius: 3px 3px 0 0;
+  margin: 0;
+  max-height: auto;
+  min-width: 80px;
+}
+
+.carousel-container:hover {
+  overflow-x: auto;
 }
