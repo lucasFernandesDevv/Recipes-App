@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import useFetch from '../../hooks/useFetch';
 import Carousel from '../Carousel';
+import addLocalStorage from './addLocalStorage';
 import './RecipeDetail.css';
 
 const URL_API_MEALS = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
@@ -15,6 +16,7 @@ export default function RecipeDetails() {
   const location = useLocation();
   const [recipe, setRecipe] = useState({});
   const [ingredients, setIngredients] = useState([]);
+  const [recipeProgress, setRecipeProgress] = useState(false);
 
   const [urlVideo, setUrlVideo] = useState('');
 
@@ -28,6 +30,14 @@ export default function RecipeDetails() {
     instructions: location.pathname.includes('meals')
       ? 'strInstructions' : 'strInstructions',
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('doneRecipes') === null) {
+      localStorage.setItem('doneRecipes', JSON.stringify([]));
+    }
+
+    // VERIFICAR SE A RECEITA JÁ ESTÁ NO ARRAY DO LOCALSTORAGE
+  }, []);
 
   useEffect(() => {
     let result = [];
@@ -69,6 +79,37 @@ export default function RecipeDetails() {
       history.push(`/drinks/${id}/in-progress`);
     }
   };
+
+  const startRecipe = () => {
+    setRecipeProgress(!recipeProgress);
+  };
+
+  const finishRecipe = () => {
+    setRecipeProgress(!recipeProgress);
+    addLocalStorage(location, recipe);
+  };
+
+  const btnStartRecipe = (
+    <button
+      type="submit"
+      data-testid="start-recipe-btn"
+      className="start-recipe-btn"
+      onClick={ () => startRecipe() }
+    >
+      Start Recipe
+    </button>
+  );
+
+  const btnFinishRecipe = (
+    <button
+      data-testid="finish-recipe-btn"
+      onClick={ () => finishRecipe() }
+    >
+      Finalizar Receita
+
+    </button>
+  );
+
   return (
     <div>
       <img
@@ -113,17 +154,15 @@ export default function RecipeDetails() {
         allowFullScreen
       />
       <Carousel />
-      <button
-        type="submit"
-        data-testid="start-recipe-btn"
-        className="start-recipe-btn"
-      >
-        Start Recipe
-      </button>
+      {
+        recipeProgress
+          ? btnFinishRecipe
+          : btnStartRecipe
+      }
+
       <button onClick={ handleClick }>
         In progress
       </button>
-      <button data-testid="finish-recipe-btn">Finalizar Receita</button>
       <button data-testid="favorite-btn">Favoritar</button>
       <button data-testid="share-btn">Compartilhar</button>
     </div>
