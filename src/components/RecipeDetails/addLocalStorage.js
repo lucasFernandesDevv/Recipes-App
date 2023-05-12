@@ -14,7 +14,6 @@ function addLocalStorage(location, recipe) {
   };
 
   const getLocal = JSON.parse(localStorage.getItem('doneRecipes'));
-  console.log(getLocal);
 
   localStorage.setItem('doneRecipes', JSON.stringify([...getLocal, doneRecipes]));
 }

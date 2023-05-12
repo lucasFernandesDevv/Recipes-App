@@ -17,7 +17,6 @@ export default function RecipeDetails() {
   const [recipe, setRecipe] = useState({});
   const [ingredients, setIngredients] = useState([]);
   const [recipeProgress, setRecipeProgress] = useState(false);
-
   const [urlVideo, setUrlVideo] = useState('');
 
   const params = {
@@ -30,14 +29,6 @@ export default function RecipeDetails() {
     instructions: location.pathname.includes('meals')
       ? 'strInstructions' : 'strInstructions',
   };
-
-  useEffect(() => {
-    if (localStorage.getItem('doneRecipes') === null) {
-      localStorage.setItem('doneRecipes', JSON.stringify([]));
-    }
-
-    // VERIFICAR SE A RECEITA JÁ ESTÁ NO ARRAY DO LOCALSTORAGE
-  }, []);
 
   useEffect(() => {
     let result = [];
@@ -66,6 +57,15 @@ export default function RecipeDetails() {
     handleFetchData();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem('doneRecipes') === null) {
+      localStorage.setItem('doneRecipes', JSON.stringify([]));
+    }
+    const idType = recipe.idMeal || recipe.idDrink;
+    const verifyDoneRecipe = JSON.parse(localStorage.getItem('doneRecipes'));
+    setRecipeProgress(verifyDoneRecipe.some((thisRecipe) => thisRecipe.id === idType));
+  }, [recipe]);
 
   useEffect(() => {
     if (recipe[params.video]) {
