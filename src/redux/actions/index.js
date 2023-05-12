@@ -38,6 +38,11 @@ export const saveFilteredDrinksByCategory = (payload) => ({
   payload,
 });
 
+export const saveFoodAndDrinkInfos = (payload) => ({
+  type: SAVE_FILTERED_DRINKS_BY_CATEGORY,
+  payload,
+});
+
 export function fetchMealsRecipes() {
   return async (dispatch) => {
     const response = await fetch(
