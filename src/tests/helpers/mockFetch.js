@@ -1,4 +1,11 @@
-export const mockFetch = (data) => jest.fn(() => Promise.resolve({
-  ok: true,
-  json: () => Promise.resolve(data),
-}));
+// export const mockFetch = (data) => jest.fn(() => Promise.resolve({
+//   ok: true,
+//   json: () => Promise.resolve(data),
+// }));
+
+import fetch from '../../../cypress/mocks/fetch';
+
+export const mockFetch = () => {
+  console.log('oi');
+  jest.spyOn(global, 'fetch').mockImplementation(fetch);
+};

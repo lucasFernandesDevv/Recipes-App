@@ -1,5 +1,6 @@
 import { useParams, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import useFetch from '../../hooks/useFetch';
 import Carousel from '../Carousel';
 import './RecipeDetail.css';
@@ -8,6 +9,7 @@ const URL_API_MEALS = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const URL_API_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 
 export default function RecipeDetails() {
+  const history = useHistory();
   const { fetchData } = useFetch();
   const { id } = useParams();
   const location = useLocation();
@@ -60,7 +62,13 @@ export default function RecipeDetails() {
       setUrlVideo(recipe[params.video].replace('watch?v=', 'embed/'));
     }
   }, [params.video, recipe]);
-  console.log(recipe);
+  const handleClick = () => {
+    if (location.pathname.includes('meals') === true) {
+      history.push(`/meals/${id}/in-progress`);
+    } else {
+      history.push(`/drinks/${id}/in-progress`);
+    }
+  };
   return (
     <div>
       <img
@@ -112,6 +120,12 @@ export default function RecipeDetails() {
       >
         Start Recipe
       </button>
+      <button onClick={ handleClick }>
+        In progress
+      </button>
+      <button data-testid="finish-recipe-btn">Finalizar Receita</button>
+      <button data-testid="favorite-btn">Favoritar</button>
+      <button data-testid="share-btn">Compartilhar</button>
     </div>
   );
 }

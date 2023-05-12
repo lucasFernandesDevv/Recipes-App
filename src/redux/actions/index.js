@@ -38,6 +38,11 @@ export const saveFilteredDrinksByCategory = (payload) => ({
   payload,
 });
 
+export const saveFoodAndDrinkInfos = (payload) => ({
+  type: SAVE_FILTERED_DRINKS_BY_CATEGORY,
+  payload,
+});
+
 export function fetchMealsRecipes() {
   return async (dispatch) => {
     const response = await fetch(
@@ -50,21 +55,29 @@ export function fetchMealsRecipes() {
 
 export function fetchDrinksRecipes() {
   return async (dispatch) => {
-    const response = await fetch(
-      'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
-    );
-    const data = await response.json();
-    dispatch(saveDrinks(data.drinks));
+    try {
+      const response = await fetch(
+        'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
+      );
+      const data = await response.json();
+      dispatch(saveDrinks(data.drinks));
+    } catch (e) {
+      throw new Error(e);
+    }
   };
 }
 
 export function fetchMealsCategories() {
   return async (dispatch) => {
-    const response = await fetch(
-      'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
-    );
-    const data = await response.json();
-    dispatch(saveMealsCategories(data.meals));
+    try {
+      const response = await fetch(
+        'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
+      );
+      const data = await response.json();
+      dispatch(saveMealsCategories(data.meals));
+    } catch (e) {
+      throw new Error(e);
+    }
   };
 }
 
