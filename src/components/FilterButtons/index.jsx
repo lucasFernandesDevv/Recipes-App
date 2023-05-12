@@ -17,11 +17,12 @@ export function FilterButtons({ setFilteredDoneRecipes }) {
           key={ `${name}-filter` }
           id={ name.toLocaleLowerCase() }
           onClick={ ({ target }) => handleFilter(target.id) }
+          data-testid="filter-by-all-btn"
         >
           {name}
         </button>
       ))}
-      <button onClick={ () => setFilteredDoneRecipes([]) }>All</button>
+      <button data-testid="filter-by-all-btn" onClick={ () => setFilteredDoneRecipes([]) }>All</button>
     </div>
   );
 }
