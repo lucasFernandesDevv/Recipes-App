@@ -23,10 +23,10 @@ function DoneRecipes() {
               tags,
               nationality,
               category,
-              isAlcoholic,
-              recipeType,
+              alcoholicOrNot,
+              type,
               id,
-              recipeImg,
+              img,
             },
             i,
           ) => (
@@ -37,11 +37,11 @@ function DoneRecipes() {
               tags={ tags }
               nationality={ nationality }
               category={ category }
-              isAlcoholic={ isAlcoholic }
-              recipeType={ recipeType }
+              isAlcoholic={ alcoholicOrNot }
+              recipeType={ type }
               index={ i }
               id={ id }
-              recipeImg={ recipeImg }
+              recipeImg={ img }
             />
           ),
         )}

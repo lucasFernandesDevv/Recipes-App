@@ -10,17 +10,17 @@ export function DoneRecipeCard({
   tags = [],
   nationality = '',
   category = '',
-  isAlcoholic = false,
-  recipeType = '',
+  alcoholicOrNot = false,
+  type = '',
   id = '',
-  recipeImg = '',
+  img = '',
 }) {
   const [isRecipeCopied, setIsRecipeCopied] = useState();
   const history = useHistory();
   const doneRecipesPath = 'done-recipes';
 
   function handleShareButton() {
-    if (recipeType === 'meals') {
+    if (type === 'meals') {
       const url = window.location.href.replace(doneRecipesPath, `meals/${id}`);
       clipboardCopy(url);
       console.log(url);
@@ -33,15 +33,15 @@ export function DoneRecipeCard({
   }
 
   function redirectToDetails() {
-    const redirectUrl = recipeType === 'meals' ? `/meals/${id}` : `/drinks/${id}`;
+    const redirectUrl = type === 'meals' ? `/meals/${id}` : `/drinks/${id}`;
     history.push(redirectUrl);
   }
 
   return (
     <div>
       <img
-        src={ recipeImg }
-        alt={ recipeImg }
+        src={ img }
+        alt={ name }
         data-testid={ `${index}-horizontal-image` }
         onClickCapture={ redirectToDetails }
       />
@@ -55,7 +55,7 @@ export function DoneRecipeCard({
           </button>
           <span data-testid={ `${index}-horizontal-top-text` }>
             {`${nationality} - ${category}`}
-            {isAlcoholic ? 'Alcoholic' : ''}
+            {alcoholicOrNot ? 'Alcoholic' : ''}
           </span>
         </div>
         <button
@@ -84,8 +84,8 @@ DoneRecipeCard.propTypes = {
   name: PropTypes.string,
   nationality: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
-  isAlcoholic: PropTypes.bool,
-  recipeType: PropTypes.string,
+  alcoholicOrNot: PropTypes.bool,
+  type: PropTypes.string,
   id: PropTypes.string,
-  recipeImg: PropTypes.string,
+  img: PropTypes.string,
 };
