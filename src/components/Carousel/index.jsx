@@ -32,8 +32,7 @@ export default function Carousel() {
       } else {
         results = await fetchData(URL_DRINKS_API);
       }
-      setRecommends([...results[params.type]
-        .filter((type, index) => index < MAX_RECOMMEND)]);
+      setRecommends(results[params.type].slice(0, MAX_RECOMMEND));
     };
     handleMeals();
     // eslint-disable-next-line react-hooks/exhaustive-deps

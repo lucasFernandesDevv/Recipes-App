@@ -34,7 +34,6 @@ function RecipeInProgress() {
         });
       } else {
         result = await fetchData(`${URL_API_DRINKS}${id}`);
-        console.log(result);
         setInfos({
           ...infos,
           imgLink: result.drinks[0].strDrinkThumb,
