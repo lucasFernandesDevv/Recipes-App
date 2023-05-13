@@ -8,7 +8,8 @@ import { addFavoriteRecipeInLocalStorage,
   addLocalStorageInProgressRecipes } from '../../helpers/addLocalStorage';
 import './RecipeDetail.css';
 import shareIcon from '../../images/shareIcon.svg';
-import favoriteIcon from '../../images/favoriteIcon.svg';
+import favoriteIcon from '../../images/whiteHeartIcon.svg';
+import favoriteChecked from '../../images/blackHeartIcon.svg';
 
 const URL_API_MEALS = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const URL_API_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
@@ -25,6 +26,7 @@ export default function RecipeDetails() {
   const [recipeInProgress, setRecipeInProgress] = useState(false);
   const [urlVideo, setUrlVideo] = useState('');
   const [hasCopyLink, setHasCopyLink] = useState(false);
+  const [idFavorite, setIdFavorite] = useState(false);
 
   const params = {
     type: location.pathname.includes('meals') ? 'meals' : 'drinks',
@@ -62,6 +64,11 @@ export default function RecipeDetails() {
       setIngredients(ingredientsList);
     };
     handleFetchData();
+    const favoritesLS = JSON.parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
+    const hasFavorite = favoritesLS.some((favorite) => favorite.id === id);
+    if (hasFavorite) {
+      setIdFavorite(true);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -125,7 +132,14 @@ export default function RecipeDetails() {
   };
 
   const onFavorite = () => {
-    addFavoriteRecipeInLocalStorage(FAVORITE_RECIPES, location, recipe);
+    if (idFavorite) {
+      const favoritesLS = JSON.parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
+      const newFavoritesLS = favoritesLS.filter((fav) => fav.id !== id);
+      localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(newFavoritesLS));
+    } else {
+      addFavoriteRecipeInLocalStorage(FAVORITE_RECIPES, location, recipe);
+    }
+    setIdFavorite(!idFavorite);
   };
 
   return (
@@ -188,10 +202,13 @@ export default function RecipeDetails() {
       </button>
       {' '}
       <button
-        data-testid="favorite-btn"
         onClick={ onFavorite }
       >
-        <img src={ favoriteIcon } alt="favorite-btn" />
+        <img
+          data-testid="favorite-btn"
+          src={ idFavorite ? favoriteChecked : favoriteIcon }
+          alt="favorite-btn"
+        />
       </button>
       {' '}
       <button
