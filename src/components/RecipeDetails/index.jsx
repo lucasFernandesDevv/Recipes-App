@@ -1,14 +1,20 @@
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import clipboardCopy from 'clipboard-copy';
 import useFetch from '../../hooks/useFetch';
 import Carousel from '../Carousel';
-import { addLocalStorageInProgressRecipes } from '../../helpers/addLocalStorage';
+import { addFavoriteRecipeInLocalStorage,
+  addLocalStorageInProgressRecipes } from '../../helpers/addLocalStorage';
 import './RecipeDetail.css';
+import shareIcon from '../../images/shareIcon.svg';
+import favoriteIcon from '../../images/whiteHeartIcon.svg';
+import favoriteChecked from '../../images/blackHeartIcon.svg';
 
 const URL_API_MEALS = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const URL_API_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 const IN_PROGRESS_RECIPES = 'inProgressRecipes';
+const FAVORITE_RECIPES = 'favoriteRecipes';
 
 export default function RecipeDetails() {
   const history = useHistory();
@@ -19,6 +25,8 @@ export default function RecipeDetails() {
   const [ingredients, setIngredients] = useState([]);
   const [recipeInProgress, setRecipeInProgress] = useState(false);
   const [urlVideo, setUrlVideo] = useState('');
+  const [hasCopyLink, setHasCopyLink] = useState(false);
+  const [idFavorite, setIdFavorite] = useState(false);
 
   const params = {
     type: location.pathname.includes('meals') ? 'meals' : 'drinks',
@@ -56,6 +64,11 @@ export default function RecipeDetails() {
       setIngredients(ingredientsList);
     };
     handleFetchData();
+    const favoritesLS = JSON.parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
+    const hasFavorite = favoritesLS.some((favorite) => favorite.id === id);
+    if (hasFavorite) {
+      setIdFavorite(true);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -109,6 +122,26 @@ export default function RecipeDetails() {
     </Link>
   );
 
+  const onShare = () => {
+    const TIME_COPY = 5000;
+    clipboardCopy(window.location.href);
+    setHasCopyLink(true);
+    setTimeout(() => {
+      setHasCopyLink(false);
+    }, TIME_COPY);
+  };
+
+  const onFavorite = () => {
+    if (idFavorite) {
+      const favoritesLS = JSON.parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
+      const newFavoritesLS = favoritesLS.filter((fav) => fav.id !== id);
+      localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(newFavoritesLS));
+    } else {
+      addFavoriteRecipeInLocalStorage(FAVORITE_RECIPES, location, recipe);
+    }
+    setIdFavorite(!idFavorite);
+  };
+
   return (
     <div>
       <img
@@ -154,8 +187,10 @@ export default function RecipeDetails() {
           allowFullScreen
         />
       ) }
-
       <Carousel />
+      {
+        hasCopyLink && <p>Link copied!</p>
+      }
       {
         recipeInProgress
           ? btnContinueRecipe
@@ -165,8 +200,23 @@ export default function RecipeDetails() {
       <button onClick={ handleClick }>
         In progress
       </button>
-      <button data-testid="favorite-btn">Favoritar</button>
-      <button data-testid="share-btn">Compartilhar</button>
+      {' '}
+      <button
+        onClick={ onFavorite }
+      >
+        <img
+          data-testid="favorite-btn"
+          src={ idFavorite ? favoriteChecked : favoriteIcon }
+          alt="favorite-btn"
+        />
+      </button>
+      {' '}
+      <button
+        data-testid="share-btn"
+        onClick={ onShare }
+      >
+        <img src={ shareIcon } alt="share-btn" />
+      </button>
     </div>
   );
 }
