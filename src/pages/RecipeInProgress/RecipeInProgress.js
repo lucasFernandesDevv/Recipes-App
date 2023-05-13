@@ -8,7 +8,8 @@ const URL_API_MEALS = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const URL_API_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
 
 window.addEventListener('beforeunload', () => {
-  localStorage.clear();
+  // localStorage.clear(); COMENTADO POR RESETAR LOCALSTORAGE DA APLICAÇÃO INTEIRA
+  // FAZENDO NÃO FUNCIONAR OUTAS PÁGINAS, FAVOR REFATORAR (Ass, Gabriel Rodrigues)
 });
 
 function RecipeInProgress() {

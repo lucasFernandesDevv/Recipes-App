@@ -1,12 +1,14 @@
-import { useParams, useLocation } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import useFetch from '../../hooks/useFetch';
 import Carousel from '../Carousel';
+import { addLocalStorageInProgressRecipes } from '../../helpers/addLocalStorage';
 import './RecipeDetail.css';
 
 const URL_API_MEALS = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=';
 const URL_API_DRINKS = 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=';
+const IN_PROGRESS_RECIPES = 'inProgressRecipes';
 
 export default function RecipeDetails() {
   const history = useHistory();
@@ -15,7 +17,7 @@ export default function RecipeDetails() {
   const location = useLocation();
   const [recipe, setRecipe] = useState({});
   const [ingredients, setIngredients] = useState([]);
-
+  const [recipeInProgress, setRecipeInProgress] = useState(false);
   const [urlVideo, setUrlVideo] = useState('');
 
   const params = {
@@ -58,6 +60,16 @@ export default function RecipeDetails() {
   }, []);
 
   useEffect(() => {
+    const verifyInProgressRecipe = JSON.parse(localStorage.getItem(IN_PROGRESS_RECIPES));
+    if (verifyInProgressRecipe
+      && verifyInProgressRecipe[params.type]
+      && verifyInProgressRecipe[params.type][id]) {
+      setRecipeInProgress(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recipe]);
+
+  useEffect(() => {
     if (recipe[params.video]) {
       setUrlVideo(recipe[params.video].replace('watch?v=', 'embed/'));
     }
@@ -69,6 +81,34 @@ export default function RecipeDetails() {
       history.push(`/drinks/${id}/in-progress`);
     }
   };
+
+  const startRecipe = () => {
+    setRecipeInProgress(!recipeInProgress);
+    addLocalStorageInProgressRecipes(IN_PROGRESS_RECIPES, location, recipe[params.id]);
+    handleClick();
+  };
+
+  const btnStartRecipe = (
+    <button
+      type="submit"
+      data-testid="start-recipe-btn"
+      className="start-recipe-btn"
+      onClick={ () => startRecipe() }
+    >
+      Start Recipe
+    </button>
+  );
+
+  const btnContinueRecipe = (
+    <Link to={ `/${params.type}/${id}/in-progress` }>
+      <button
+        data-testid="start-recipe-btn"
+      >
+        Continue Recipe
+      </button>
+    </Link>
+  );
+
   return (
     <div>
       <img
@@ -101,29 +141,30 @@ export default function RecipeDetails() {
       }
       <p>Instruções:</p>
       <p data-testid="instructions">{ recipe[params.instructions] }</p>
-      <iframe
-        data-testid="video"
-        width="560"
-        height="315"
-        src={ urlVideo }
-        title={ recipe[params.name] }
-        frameBorder="20"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media;
+      { urlVideo && (
+        <iframe
+          data-testid="video"
+          width="560"
+          height="315"
+          src={ urlVideo }
+          title={ recipe[params.name] }
+          frameBorder="20"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media;
           gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      />
+          allowFullScreen
+        />
+      ) }
+
       <Carousel />
-      <button
-        type="submit"
-        data-testid="start-recipe-btn"
-        className="start-recipe-btn"
-      >
-        Start Recipe
-      </button>
+      {
+        recipeInProgress
+          ? btnContinueRecipe
+          : btnStartRecipe
+      }
+
       <button onClick={ handleClick }>
         In progress
       </button>
-      <button data-testid="finish-recipe-btn">Finalizar Receita</button>
       <button data-testid="favorite-btn">Favoritar</button>
       <button data-testid="share-btn">Compartilhar</button>
     </div>
