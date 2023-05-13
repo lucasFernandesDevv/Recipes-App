@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
+import clipboardCopy from 'clipboard-copy';
+import { useHistory } from 'react-router-dom';
 
 export function DoneRecipeCard({
   index = 0,
@@ -8,18 +10,60 @@ export function DoneRecipeCard({
   tags = [],
   nationality = '',
   category = '',
+  alcoholicOrNot = false,
+  type = '',
+  id = '',
+  img = '',
 }) {
+  const [isRecipeCopied, setIsRecipeCopied] = useState();
+  const history = useHistory();
+  const doneRecipesPath = 'done-recipes';
+
+  function handleShareButton() {
+    if (type === 'meals') {
+      const url = window.location.href.replace(doneRecipesPath, `meals/${id}`);
+      clipboardCopy(url);
+      console.log(url);
+    } else {
+      const url = window.location.href.replace(doneRecipesPath, `drinks/${id}`);
+      clipboardCopy(url);
+      console.log(url);
+    }
+    setIsRecipeCopied(true);
+  }
+
+  function redirectToDetails() {
+    const redirectUrl = type === 'meals' ? `/meals/${id}` : `/drinks/${id}`;
+    history.push(redirectUrl);
+  }
+
   return (
     <div>
-      <img src="" alt="" data-testid={ `${index}-horizontal-image` } />
+      <img
+        src={ img }
+        alt={ name }
+        data-testid={ `${index}-horizontal-image` }
+        onClickCapture={ redirectToDetails }
+      />
       <div>
         <div>
-          <h2 data-testid={ `${index}-horizontal-name` }>{name}</h2>
+          <button
+            data-testid={ `${index}-horizontal-name` }
+            onClickCapture={ redirectToDetails }
+          >
+            {name}
+          </button>
           <span data-testid={ `${index}-horizontal-top-text` }>
             {`${nationality} - ${category}`}
+            {alcoholicOrNot ? 'Alcoholic' : ''}
           </span>
         </div>
-        <button data-testid={ `${index}-horizontal-share-btn` }>Share</button>
+        <button
+          data-testid={ `${index}-horizontal-share-btn` }
+          onClick={ handleShareButton }
+        >
+          {isRecipeCopied ? 'Link copied!' : 'Share'}
+        </button>
       </div>
       <span data-testid={ `${index}-horizontal-done-date` }>{doneDate}</span>
       <div>
@@ -40,4 +84,8 @@ DoneRecipeCard.propTypes = {
   name: PropTypes.string,
   nationality: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
+  alcoholicOrNot: PropTypes.bool,
+  type: PropTypes.string,
+  id: PropTypes.string,
+  img: PropTypes.string,
 };
