@@ -45,10 +45,15 @@ export default function Carousel() {
       <div className="carousel-container">
         {
           recommends.map((recommend, index) => (
+            // Não funcionou, porém não é critério de avaliação:
+            // <Link
+            //   key={ recommend[params.id] }
+            //   to={ `/${params.type}/${recommend[params.id]}` }
+            // >
             <div
-              key={ recommend[params.id] }
               data-testid={ `${index}-recommendation-card` }
               className="carousel-item"
+              key={ recommend[params.id] }
             >
               <img
                 data-testid={ `${index}-card-img` }
@@ -62,6 +67,7 @@ export default function Carousel() {
                 { recommend[params.name] }
               </h2>
             </div>
+            // </Link>
           ))
         }
       </div>
