@@ -15,7 +15,7 @@ function DoneRecipes() {
       <Header title="Done Recipes" />
       <FilterButtons setFilteredDoneRecipes={ setFilteredDoneRecipes } />
       <div>
-        {(hasAnyFilter ? filteredDoneRecipes : doneRecipes).map(
+        {(hasAnyFilter ? filteredDoneRecipes : doneRecipes)?.map(
           (
             {
               name,
