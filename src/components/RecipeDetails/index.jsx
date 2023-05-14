@@ -103,9 +103,13 @@ export default function RecipeDetails() {
 
   const btnStartRecipe = (
     <button
+      className="bg-green-500 py-2 px-2 mb-2 ml-2 border-2 rounded-md fixed
+      text-white  border-green-300 shadow-2xl
+      shadow-black bottom-0 right-2
+      start-recipe-btn"
       type="submit"
       data-testid="start-recipe-btn"
-      className="start-recipe-btn"
+      // className="start-recipe-btn"
       onClick={ () => startRecipe() }
     >
       Start Recipe
@@ -115,6 +119,7 @@ export default function RecipeDetails() {
   const btnContinueRecipe = (
     <Link to={ `/${params.type}/${id}/in-progress` }>
       <button
+        className="bg-yellow-500 py-2 px-2 mb-2 ml-2 border-4 text-violet-700 italic"
         data-testid="start-recipe-btn"
       >
         Continue Recipe
@@ -191,32 +196,43 @@ export default function RecipeDetails() {
       {
         hasCopyLink && <p>Link copied!</p>
       }
-      {
+      {/* {
         recipeInProgress
           ? btnContinueRecipe
           : btnStartRecipe
-      }
-
-      <button onClick={ handleClick }>
-        In progress
-      </button>
-      {' '}
-      <button
-        onClick={ onFavorite }
-      >
-        <img
-          data-testid="favorite-btn"
-          src={ idFavorite ? favoriteChecked : favoriteIcon }
-          alt="favorite-btn"
-        />
-      </button>
-      {' '}
-      <button
-        data-testid="share-btn"
-        onClick={ onShare }
-      >
-        <img src={ shareIcon } alt="share-btn" />
-      </button>
+      } */}
+      <div className="flex justify-center gap-4">
+        <button
+          onClick={ handleClick }
+          className="bg-blue-500 py-2 px-2 mb-2 ml-2 border-2 rounded-md
+           text-white  border-blue-300 shadow-2xl
+             shadow-blue-500/50"
+        >
+          In progress
+        </button>
+        {' '}
+        <button
+          onClick={ onFavorite }
+        >
+          <img
+            data-testid="favorite-btn"
+            src={ idFavorite ? favoriteChecked : favoriteIcon }
+            alt="favorite-btn"
+          />
+        </button>
+        {' '}
+        <button
+          data-testid="share-btn"
+          onClick={ onShare }
+        >
+          <img src={ shareIcon } alt="share-btn" />
+        </button>
+        {
+          recipeInProgress
+            ? btnContinueRecipe
+            : btnStartRecipe
+        }
+      </div>
     </div>
   );
 }
