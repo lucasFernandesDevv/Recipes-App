@@ -6,6 +6,7 @@ import App from '../App';
 
 describe('Testa a tela de receitas feitas', () => {
   const mockedInitalState = initialState;
+  const initialPath = '/done-recipes';
   beforeEach(() => {
     localStorage.setItem('doneRecipes', JSON.stringify(mockedDoneRecipes));
   });
@@ -16,7 +17,7 @@ describe('Testa a tela de receitas feitas', () => {
 
   it('Renders the DoneRecipes page correctly', async () => {
     const expectedFilterButtons = ['Meals', 'Drinks', 'All'];
-    renderWithRouterAndRedux(<App />, mockedInitalState, '/done-recipes');
+    renderWithRouterAndRedux(<App />, mockedInitalState, initialPath);
 
     expectedFilterButtons.forEach((button) => {
       const filterButton = screen.getByRole('button', { name: button });
@@ -46,7 +47,7 @@ describe('Testa a tela de receitas feitas', () => {
   it('Copies the link to the clipboard when the share button is clicked', async () => {
     window.navigator.clipboard = { writeText: jest.fn() };
     window.document.execCommand = jest.fn();
-    renderWithRouterAndRedux(<App />, mockedInitalState, '/done-recipes');
+    renderWithRouterAndRedux(<App />, mockedInitalState, initialPath);
 
     const shareButton = screen.getAllByAltText('share-btn')[0];
     expect(shareButton).toBeInTheDocument();
@@ -62,7 +63,7 @@ describe('Testa a tela de receitas feitas', () => {
   });
   it('Filters the recipes by type', async () => {
     const expectedFilterButtons = ['Meals', 'Drinks', 'All'];
-    renderWithRouterAndRedux(<App />, mockedInitalState, '/done-recipes');
+    renderWithRouterAndRedux(<App />, mockedInitalState, initialPath);
 
     const mealsButton = screen.getByRole('button', { name: expectedFilterButtons[0] });
     const drinksButton = screen.getByRole('button', { name: expectedFilterButtons[1] });
