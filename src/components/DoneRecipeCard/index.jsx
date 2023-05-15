@@ -69,6 +69,7 @@ export function DoneRecipeCard({
         </div>
         <button
           onClick={ handleShareButton }
+          src="shareIcon"
         >
           <img
             src={ shareIcon }
@@ -97,7 +98,7 @@ DoneRecipeCard.propTypes = {
   name: PropTypes.string,
   nationality: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
-  alcoholicOrNot: PropTypes.bool,
+  alcoholicOrNot: PropTypes.string,
   type: PropTypes.string,
   id: PropTypes.string,
   image: PropTypes.string,
