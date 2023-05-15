@@ -15,36 +15,21 @@ function DoneRecipes() {
       <Header title="Done Recipes" />
       <FilterButtons setFilteredDoneRecipes={ setFilteredDoneRecipes } />
       <div>
-        {(hasAnyFilter ? filteredDoneRecipes : doneRecipes)?.map(
-          (
-            {
-              name,
-              doneDate,
-              tags,
-              nationality,
-              category,
-              alcoholicOrNot,
-              type,
-              id,
-              img,
-            },
-            i,
-          ) => (
-            <DoneRecipeCard
-              key={ name }
-              name={ name }
-              doneDate={ doneDate }
-              tags={ tags }
-              nationality={ nationality }
-              category={ category }
-              isAlcoholic={ alcoholicOrNot }
-              recipeType={ type }
-              index={ i }
-              id={ id }
-              recipeImg={ img }
-            />
-          ),
-        )}
+        {(hasAnyFilter ? filteredDoneRecipes : doneRecipes)?.map((item, i) => (
+          <DoneRecipeCard
+            index={ i }
+            key={ item.id }
+            name={ item.name }
+            doneDate={ item.doneDate }
+            tags={ item.tags }
+            nationality={ item.nationality }
+            category={ item.category }
+            alcoholicOrNot={ item.alcoholicOrNot }
+            type={ item.type }
+            id={ item.id }
+            image={ item.image }
+          />
+        ))}
       </div>
       <Footer />
     </>
