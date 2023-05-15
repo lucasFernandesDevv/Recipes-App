@@ -8,12 +8,15 @@ function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState(
     JSON.parse(localStorage.getItem('favoriteRecipes')),
   );
+  const [filteredFavoriteRecipes, setFilteredFavoriteRecipes] = useState([]);
+
+  const hasAnyFilter = filteredFavoriteRecipes.length > 0;
 
   return (
     <>
       <Header title="Favorite Recipes" />
-      <FilterButtons />
-      {favoriteRecipes.map(
+      <FilterButtons setFilteredFavoriteRecipes={ setFilteredFavoriteRecipes } />
+      {(hasAnyFilter ? filteredFavoriteRecipes : favoriteRecipes).map(
         ({ name, nationality, category, type, id, image }, i) => (
           <FavoriteRecipeCard
             key={ name }

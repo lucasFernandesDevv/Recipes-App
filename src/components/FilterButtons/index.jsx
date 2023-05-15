@@ -2,21 +2,28 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
-export default function FilterButtons({ setFilteredDoneRecipes = () => {} }) {
+export default function FilterButtons({
+  setFilteredDoneRecipes = () => {},
+  setFilteredFavoriteRecipes = () => {},
+}) {
   const buttonName = ['Meals', 'Drinks'];
-  const { location: { pathname } } = useHistory();
+  const {
+    location: { pathname },
+  } = useHistory();
 
   function handleFilter(filter) {
     if (pathname === '/done-recipes') {
       const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
-      const filteredRecipes = doneRecipes.filter(
-        ({ type }) => type === filter,
-      );
+      const filteredRecipes = doneRecipes.filter(({ type }) => type === filter);
       setFilteredDoneRecipes(filteredRecipes);
     } else {
-      const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
-      const filteredRecipes = favoriteRecipes.filter(({ type }) => type === filter);
-      setFilteredDoneRecipes(filteredRecipes);
+      const favoriteRecipes = JSON.parse(
+        localStorage.getItem('favoriteRecipes'),
+      );
+      const filteredRecipes = favoriteRecipes.filter(
+        ({ type }) => type === filter,
+      );
+      setFilteredFavoriteRecipes(filteredRecipes);
     }
   }
 
@@ -40,7 +47,13 @@ export default function FilterButtons({ setFilteredDoneRecipes = () => {} }) {
       ))}
       <button
         data-testid="filter-by-all-btn"
-        onClick={ () => setFilteredDoneRecipes([]) }
+        onClick={ () => {
+          if (pathname === '/done-recipes') {
+            setFilteredDoneRecipes([]);
+          } else {
+            setFilteredFavoriteRecipes([]);
+          }
+        } }
       >
         All
       </button>
@@ -50,4 +63,5 @@ export default function FilterButtons({ setFilteredDoneRecipes = () => {} }) {
 
 FilterButtons.propTypes = {
   setFilteredDoneRecipes: PropTypes.func.isRequired,
+  setFilteredFavoriteRecipes: PropTypes.func.isRequired,
 };
