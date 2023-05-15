@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import { DoneRecipeCard } from '../../components/DoneRecipeCard';
-import { FilterButtons } from '../../components/FilterButtons';
+import DoneRecipeCard from '../../components/DoneRecipeCard';
+import FilterButtons from '../../components/FilterButtons';
 
 function DoneRecipes() {
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));

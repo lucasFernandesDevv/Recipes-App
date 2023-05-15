@@ -4,49 +4,56 @@ import clipboardCopy from 'clipboard-copy';
 import { useHistory } from 'react-router-dom';
 import shareIcon from '../../images/shareIcon.svg';
 // import favoriteIcon from '../../images/whiteHeartIcon.svg';
-// import favoriteChecked from '../../images/blackHeartIcon.svg';
+import favoriteChecked from '../../images/blackHeartIcon.svg';
 
-export default function DoneRecipeCard({
+export default function FavoriteRecipeCard({
   index = 0,
   name = '',
-  doneDate = '',
-  tags = [],
   nationality = '',
   category = '',
-  alcoholicOrNot = '',
   type = '',
   id = '',
   image = '',
+  handleUnfavorite = () => {},
 }) {
-  console.log(category);
   const [isRecipeCopied, setIsRecipeCopied] = useState();
   const history = useHistory();
-  const doneRecipesPath = 'done-recipes';
-  console.log(alcoholicOrNot);
+  const favoriteRecipesPath = 'favorite-recipes';
+
   function handleShareButton() {
     if (type === 'meal') {
-      const url = window.location.href.replace(doneRecipesPath, `meals/${id}`);
+      const url = window.location.href.replace(
+        favoriteRecipesPath,
+        `meals/${id}`,
+      );
       clipboardCopy(url);
-      console.log(url);
     } else {
-      const url = window.location.href.replace(doneRecipesPath, `drinks/${id}`);
+      const url = window.location.href.replace(
+        favoriteRecipesPath,
+        `drinks/${id}`,
+      );
       clipboardCopy(url);
-      console.log(url);
     }
     setIsRecipeCopied(true);
   }
 
   function redirectToDetails() {
     const redirectUrl = type === 'meal' ? `/meals/${id}` : `/drinks/${id}`;
-    console.log(redirectUrl, type);
     history.push(redirectUrl);
+  }
+
+  function handleUnfavoriteButton() {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const newFavoriteRecipes = favoriteRecipes.filter(
+      (recipe) => recipe.id !== id,
+    );
+    localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
+    handleUnfavorite(newFavoriteRecipes);
   }
 
   return (
     <div>
-      <button
-        onClick={ redirectToDetails }
-      >
+      <button onClick={ redirectToDetails }>
         <img
           className="h-40 w-40"
           src={ image }
@@ -64,42 +71,34 @@ export default function DoneRecipeCard({
           </button>
           <span data-testid={ `${index}-horizontal-top-text` }>
             {`- ${nationality} - ${category}`}
-            {alcoholicOrNot ? ' - Alcoholic' : null}
           </span>
         </div>
-        <button
-          onClick={ handleShareButton }
-          src="shareIcon"
-        >
+        <button onClick={ handleShareButton } src="shareIcon">
           <img
             src={ shareIcon }
             alt="share-btn"
             data-testid={ `${index}-horizontal-share-btn` }
           />
         </button>
+        <button
+          onClick={ handleUnfavoriteButton }
+          data-testid={ `${index}-horizontal-favorite-btn` }
+        >
+          <img src={ favoriteChecked } alt="filled heart icon" />
+        </button>
         {isRecipeCopied && 'Link copied!'}
-      </div>
-      <p data-testid={ `${index}-horizontal-done-date` }>{doneDate}</p>
-      <div>
-        {tags.map((tag, i) => (
-          <p key={ i } data-testid={ `${index}-${tag}-horizontal-tag` }>
-            {tag}
-          </p>
-        ))}
       </div>
     </div>
   );
 }
 
-DoneRecipeCard.propTypes = {
+FavoriteRecipeCard.propTypes = {
   category: PropTypes.string,
-  doneDate: PropTypes.string,
   index: PropTypes.number,
   name: PropTypes.string,
   nationality: PropTypes.string,
-  tags: PropTypes.arrayOf(PropTypes.string),
-  alcoholicOrNot: PropTypes.string,
   type: PropTypes.string,
   id: PropTypes.string,
   image: PropTypes.string,
+  handleUnfavorite: PropTypes.func,
 };
