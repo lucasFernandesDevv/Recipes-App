@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import logoRecipesApp from '../../images/logoRecipesApp.png';
+import tomate from '../../images/tomate.png';
 
 export default function Login() {
   const history = useHistory();
@@ -43,12 +45,16 @@ export default function Login() {
   }, [userEmail, userPassword, validateEmail, validatePassword]);
 
   return (
-    <main className="flex justify-center items-center h-screen">
+    <main className="flex flex-col justify-start items-center h-screen pb-4">
+      <div className="bg-[#41197f] w-full h-[21rem] flex flex-col items-center mb-10">
+        <img src={ logoRecipesApp } alt="" className="w-40 h-36 mt-12" />
+        <img src={ tomate } alt="" className="w-full h-64" />
+      </div>
       <form
         onSubmit={ handleLogin }
-        className="flex flex-col justify-center gap-4 items-center"
+        className="flex flex-col justify-center gap-4 mt-12 pb-2 items-center"
       >
-        <h1 className="text-xl text-violet-700 italic">LOGIN</h1>
+        <h1 className="text-xl text-violet-700 font-bold italic">LOGIN</h1>
         <label htmlFor="email">
           <input
             type="email"
@@ -63,8 +69,10 @@ export default function Login() {
               outline-none
               placeholder-violet-300
               ml-2
+              text-violet-700
               w-64
               p-2
+              rounded
               "
           />
         </label>
@@ -81,9 +89,11 @@ export default function Login() {
             border-violet-300
             outline-none
             placeholder-violet-300
+            text-violet-700
             ml-2
             w-64
             p-2
+            rounded
             "
           />
         </label>
