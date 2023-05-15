@@ -17,7 +17,7 @@ function FavoriteRecipes() {
       <Header title="Favorite Recipes" />
       <FilterButtons setFilteredFavoriteRecipes={ setFilteredFavoriteRecipes } />
       {(hasAnyFilter ? filteredFavoriteRecipes : favoriteRecipes).map(
-        ({ name, nationality, category, type, id, image }, i) => (
+        ({ name, nationality, category, type, id, image, alcoholicOrNot }, i) => (
           <FavoriteRecipeCard
             key={ name }
             name={ name }
@@ -28,6 +28,7 @@ function FavoriteRecipes() {
             id={ id }
             image={ image }
             handleUnfavorite={ setFavoriteRecipes }
+            alcoholicOrNot={ alcoholicOrNot }
           />
         ),
       )}

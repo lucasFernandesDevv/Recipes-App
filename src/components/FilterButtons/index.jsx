@@ -62,6 +62,6 @@ export default function FilterButtons({
 }
 
 FilterButtons.propTypes = {
-  setFilteredDoneRecipes: PropTypes.func.isRequired,
-  setFilteredFavoriteRecipes: PropTypes.func.isRequired,
+  setFilteredDoneRecipes: PropTypes.func,
+  setFilteredFavoriteRecipes: PropTypes.func,
 };

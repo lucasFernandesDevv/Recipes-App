@@ -13,6 +13,7 @@ export default function FavoriteRecipeCard({
   type = '',
   id = '',
   image = '',
+  alcoholicOrNot = '',
   handleUnfavorite = () => {},
 }) {
   const [isRecipeCopied, setIsRecipeCopied] = useState();
@@ -54,7 +55,7 @@ export default function FavoriteRecipeCard({
     <div>
       <button onClick={ redirectToDetails }>
         <img
-          className="h-40 w-40"
+          className="h-20 w-20"
           src={ image }
           alt={ name }
           data-testid={ `${index}-horizontal-image` }
@@ -64,12 +65,13 @@ export default function FavoriteRecipeCard({
         <div>
           <button
             data-testid={ `${index}-horizontal-name` }
-            onClickCapture={ redirectToDetails }
+            onClick={ redirectToDetails }
           >
             {name}
           </button>
           <span data-testid={ `${index}-horizontal-top-text` }>
             {`- ${nationality} - ${category}`}
+            {alcoholicOrNot ? ' - Alcoholic' : null}
           </span>
         </div>
         <button onClick={ handleShareButton } src="shareIcon">
@@ -101,4 +103,5 @@ FavoriteRecipeCard.propTypes = {
   id: PropTypes.string,
   image: PropTypes.string,
   handleUnfavorite: PropTypes.func,
+  alcoholicOrNot: PropTypes.string,
 };
