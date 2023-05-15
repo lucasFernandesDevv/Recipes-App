@@ -1,21 +1,21 @@
 import { act, screen } from '@testing-library/react';
-import { mockedDoneRecipes } from './helpers/mockLocalStorage';
+import { mockedFavoriteRecipes } from './helpers/mockLocalStorage';
 import { renderWithRouterAndRedux } from './helpers/RenderWithRouter';
 import { initialState } from './helpers/initialState';
 import App from '../App';
 
 describe('Testa a tela de receitas feitas', () => {
   const mockedInitalState = initialState;
-  const initialPath = '/done-recipes';
+  const initialPath = '/favorite-recipes';
   beforeEach(() => {
-    localStorage.setItem('doneRecipes', JSON.stringify(mockedDoneRecipes));
+    localStorage.setItem('favoriteRecipes', JSON.stringify(mockedFavoriteRecipes));
   });
 
   afterEach(() => {
     localStorage.clear();
   });
 
-  it('Renders the DoneRecipes page correctly', async () => {
+  it('Renders the Favorite Recipes page correctly', async () => {
     const expectedFilterButtons = ['Meals', 'Drinks', 'All'];
     renderWithRouterAndRedux(<App />, mockedInitalState, initialPath);
 
@@ -24,24 +24,18 @@ describe('Testa a tela de receitas feitas', () => {
       expect(filterButton).toBeInTheDocument();
     });
 
-    const recipeImage = screen.getByAltText(mockedDoneRecipes[0].name);
-    expect(recipeImage).toHaveAttribute('src', mockedDoneRecipes[0].image);
+    const recipeImage = screen.getByAltText(mockedFavoriteRecipes[0].name);
+    expect(recipeImage).toHaveAttribute('src', mockedFavoriteRecipes[0].image);
     expect(recipeImage).toBeInTheDocument();
 
-    const recipeName = screen.getByText(mockedDoneRecipes[0].name);
+    const recipeName = screen.getByText(mockedFavoriteRecipes[0].name);
     expect(recipeName).toBeInTheDocument();
 
     const recipeCategory = await screen.findByText(/vegetarian/i);
     expect(recipeCategory).toBeInTheDocument();
 
-    const recipeDoneDate = await screen.findAllByText(mockedDoneRecipes[0].doneDate);
-    expect(recipeDoneDate).toHaveLength(2);
-
     const shareButtons = screen.getAllByAltText('share-btn');
     expect(shareButtons).toHaveLength(2);
-
-    const recipeTags = screen.getByText(mockedDoneRecipes[0].tags[0]);
-    expect(recipeTags).toBeInTheDocument();
   });
 
   it('Copies the link to the clipboard when the share button is clicked', async () => {
@@ -69,8 +63,8 @@ describe('Testa a tela de receitas feitas', () => {
     const drinksButton = screen.getByRole('button', { name: expectedFilterButtons[1] });
     const allButton = screen.getByRole('button', { name: expectedFilterButtons[2] });
 
-    const recipeImageMeal = screen.getByAltText(mockedDoneRecipes[0].name);
-    const recipeImageDrink = screen.getByAltText(mockedDoneRecipes[1].name);
+    const recipeImageMeal = screen.getByAltText(mockedFavoriteRecipes[0].name);
+    const recipeImageDrink = screen.getByAltText(mockedFavoriteRecipes[1].name);
 
     expect(recipeImageMeal).toBeInTheDocument();
     expect(recipeImageDrink).toBeInTheDocument();
@@ -86,14 +80,14 @@ describe('Testa a tela de receitas feitas', () => {
       mealsButton.click();
     });
 
-    expect(screen.getByAltText(mockedDoneRecipes[0].name)).toBeInTheDocument();
+    expect(screen.getByAltText(mockedFavoriteRecipes[0].name)).toBeInTheDocument();
     expect(recipeImageDrink).not.toBeInTheDocument();
 
     act(() => {
       allButton.click();
     });
 
-    expect(screen.getByAltText(mockedDoneRecipes[0].name)).toBeInTheDocument();
-    expect(screen.getByAltText(mockedDoneRecipes[1].name)).toBeInTheDocument();
+    expect(screen.getByAltText(mockedFavoriteRecipes[0].name)).toBeInTheDocument();
+    expect(screen.getByAltText(mockedFavoriteRecipes[1].name)).toBeInTheDocument();
   });
 });
