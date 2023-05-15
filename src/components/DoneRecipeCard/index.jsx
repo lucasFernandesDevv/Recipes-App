@@ -48,7 +48,7 @@ export default function DoneRecipeCard({
         onClick={ redirectToDetails }
       >
         <img
-          className="h-40 w-40"
+          className="h-20 w-20"
           src={ image }
           alt={ name }
           data-testid={ `${index}-horizontal-image` }
