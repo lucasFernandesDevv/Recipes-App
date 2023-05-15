@@ -1,5 +1,8 @@
+/* eslint-disable max-lines */
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory,
+  useLocation,
+  useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import clipboardCopy from 'clipboard-copy';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -27,6 +30,7 @@ window.addEventListener('beforeunload', () => {
 
 function RecipeInProgress() {
   const location = useLocation();
+  const history = useHistory();
   const { id } = useParams();
   const { fetchData } = useFetch();
   const [infos, setInfos] = useState({});
@@ -36,6 +40,7 @@ function RecipeInProgress() {
   const [allCheckeds, setAllCheckeds] = useState(false);
   const [idFavorite, setIdFavorite] = useState(false);
   const [recipe, setRecipe] = useState({});
+  const [checkboxes, setCheckboxes] = useState(['false']);
 
   const params = {
     type: location.pathname.includes('meals') ? 'meals' : 'drinks',
@@ -99,6 +104,7 @@ function RecipeInProgress() {
   const onFavorite = () => {
     if (idFavorite) {
       const favoritesLS = JSON.parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
+      console.log(favoritesLS);
       const newFavoritesLS = favoritesLS.filter((fav) => fav.id !== id);
       localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(newFavoritesLS));
     } else {
@@ -109,7 +115,7 @@ function RecipeInProgress() {
 
   useEffect(() => {
     const recipeInLS = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    if (!recipeInLS[params.type][id]) {
+    if (!recipeInLS[params.type]) {
       ingredients.forEach(({ ingredient }) => {
         setControlCheck((prev) => ({ ...prev, [ingredient]: false }));
       });
@@ -133,6 +139,12 @@ function RecipeInProgress() {
 
   const handleChange = ({ target }) => {
     const { name, checked } = target;
+    const arrayCheckboxes = [];
+    const check = document.querySelectorAll('.ingredient-checkbox');
+    check.forEach((box) => {
+      arrayCheckboxes.push(box.checked);
+    });
+    setCheckboxes(arrayCheckboxes);
     setControlCheck({
       ...controlCheck,
       [name]: checked,
@@ -163,7 +175,6 @@ function RecipeInProgress() {
     const verifyCheckbox = Object.values(controlCheck).every((val) => val !== false);
     setAllCheckeds(verifyCheckbox);
   }, [controlCheck]);
-
   return (
     <>
       <Header title="Recipes in Progress" />
@@ -202,6 +213,7 @@ function RecipeInProgress() {
               {`${map.ingredient}`}
               <input
                 type="checkbox"
+                className="ingredient-checkbox"
                 name={ map.ingredient }
                 onChange={ handleChange }
                 checked={ controlCheck[map.ingredient] }
@@ -212,8 +224,11 @@ function RecipeInProgress() {
         <button
           className={ allCheckeds ? btnEnabled : btnDisabled }
           data-testid="finish-recipe-btn"
-          disabled={ !allCheckeds }
-          onClick={ () => doneRecipes(recipe, location) }
+          disabled={ !checkboxes.every((checked) => checked === true) }
+          onClick={ () => {
+            doneRecipes(recipe, location);
+            history.push('/done-recipes');
+          } }
         >
           Finish Recipe
         </button>
