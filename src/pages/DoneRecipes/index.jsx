@@ -26,7 +26,7 @@ function DoneRecipes() {
               alcoholicOrNot,
               type,
               id,
-              img,
+              image,
             },
             i,
           ) => (
@@ -37,11 +37,11 @@ function DoneRecipes() {
               tags={ tags }
               nationality={ nationality }
               category={ category }
-              isAlcoholic={ alcoholicOrNot }
-              recipeType={ type }
+              alcoholicOrNot={ alcoholicOrNot }
+              type={ type }
               index={ i }
               id={ id }
-              recipeImg={ img }
+              image={ image }
             />
           ),
         )}

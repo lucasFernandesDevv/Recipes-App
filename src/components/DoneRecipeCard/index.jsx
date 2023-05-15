@@ -13,7 +13,7 @@ export function DoneRecipeCard({
   alcoholicOrNot = false,
   type = '',
   id = '',
-  img = '',
+  image = '',
 }) {
   const [isRecipeCopied, setIsRecipeCopied] = useState();
   const history = useHistory();
@@ -40,7 +40,7 @@ export function DoneRecipeCard({
   return (
     <div>
       <img
-        src={ img }
+        src={ image }
         alt={ name }
         data-testid={ `${index}-horizontal-image` }
         onClickCapture={ redirectToDetails }
@@ -61,6 +61,7 @@ export function DoneRecipeCard({
         <button
           data-testid={ `${index}-horizontal-share-btn` }
           onClick={ handleShareButton }
+          src="shareIcon"
         >
           {isRecipeCopied ? 'Link copied!' : 'Share'}
         </button>
@@ -87,5 +88,5 @@ DoneRecipeCard.propTypes = {
   alcoholicOrNot: PropTypes.bool,
   type: PropTypes.string,
   id: PropTypes.string,
-  img: PropTypes.string,
+  image: PropTypes.string,
 };
