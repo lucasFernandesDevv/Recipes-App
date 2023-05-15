@@ -7,7 +7,6 @@ import FilterButtons from '../../components/FilterButtons';
 function DoneRecipes() {
   const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
   const [filteredDoneRecipes, setFilteredDoneRecipes] = useState([]);
-
   const hasAnyFilter = filteredDoneRecipes.length > 0;
 
   return (
@@ -15,7 +14,7 @@ function DoneRecipes() {
       <Header title="Done Recipes" />
       <FilterButtons setFilteredDoneRecipes={ setFilteredDoneRecipes } />
       <div>
-        {(hasAnyFilter ? filteredDoneRecipes : doneRecipes).map(
+        {(hasAnyFilter ? filteredDoneRecipes : doneRecipes)?.map(
           (
             {
               name,

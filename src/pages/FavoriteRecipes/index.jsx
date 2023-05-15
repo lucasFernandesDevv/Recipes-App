@@ -16,7 +16,7 @@ function FavoriteRecipes() {
     <>
       <Header title="Favorite Recipes" />
       <FilterButtons setFilteredFavoriteRecipes={ setFilteredFavoriteRecipes } />
-      {(hasAnyFilter ? filteredFavoriteRecipes : favoriteRecipes).map(
+      {(hasAnyFilter ? filteredFavoriteRecipes : favoriteRecipes)?.map(
         ({ name, nationality, category, type, id, image, alcoholicOrNot }, i) => (
           <FavoriteRecipeCard
             key={ name }
