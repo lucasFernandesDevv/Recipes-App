@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
 import { useHistory } from 'react-router-dom';
 import shareIcon from '../../images/shareIcon.svg';
-// import favoriteIcon from '../../images/whiteHeartIcon.svg';
-import favoriteChecked from '../../images/blackHeartIcon.svg';
+import blackHeartIcon from '../../images/blackHeartIcon.svg';
 
 export default function FavoriteRecipeCard({
   index = 0,
@@ -80,11 +79,12 @@ export default function FavoriteRecipeCard({
             data-testid={ `${index}-horizontal-share-btn` }
           />
         </button>
-        <button
-          onClick={ handleUnfavoriteButton }
-          data-testid={ `${index}-horizontal-favorite-btn` }
-        >
-          <img src={ favoriteChecked } alt="filled heart icon" />
+        <button onClick={ handleUnfavoriteButton }>
+          <img
+            src={ blackHeartIcon }
+            data-testid={ `${index}-horizontal-favorite-btn` }
+            alt="filled heart icon"
+          />
         </button>
         {isRecipeCopied && 'Link copied!'}
       </div>
