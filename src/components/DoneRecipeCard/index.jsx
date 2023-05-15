@@ -2,6 +2,9 @@ import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import clipboardCopy from 'clipboard-copy';
 import { useHistory } from 'react-router-dom';
+import shareIcon from '../../images/shareIcon.svg';
+// import favoriteIcon from '../../images/whiteHeartIcon.svg';
+// import favoriteChecked from '../../images/blackHeartIcon.svg';
 
 export function DoneRecipeCard({
   index = 0,
@@ -10,17 +13,18 @@ export function DoneRecipeCard({
   tags = [],
   nationality = '',
   category = '',
-  alcoholicOrNot = false,
+  alcoholicOrNot = '',
   type = '',
   id = '',
   image = '',
 }) {
+  console.log(category);
   const [isRecipeCopied, setIsRecipeCopied] = useState();
   const history = useHistory();
   const doneRecipesPath = 'done-recipes';
-
+  console.log(alcoholicOrNot);
   function handleShareButton() {
-    if (type === 'meals') {
+    if (type === 'meal') {
       const url = window.location.href.replace(doneRecipesPath, `meals/${id}`);
       clipboardCopy(url);
       console.log(url);
@@ -33,18 +37,23 @@ export function DoneRecipeCard({
   }
 
   function redirectToDetails() {
-    const redirectUrl = type === 'meals' ? `/meals/${id}` : `/drinks/${id}`;
+    const redirectUrl = type === 'meal' ? `/meals/${id}` : `/drinks/${id}`;
+    console.log(redirectUrl, type);
     history.push(redirectUrl);
   }
 
   return (
     <div>
-      <img
-        src={ image }
-        alt={ name }
-        data-testid={ `${index}-horizontal-image` }
-        onClickCapture={ redirectToDetails }
-      />
+      <button
+        onClick={ redirectToDetails }
+      >
+        <img
+          className="h-40 w-40"
+          src={ image }
+          alt={ name }
+          data-testid={ `${index}-horizontal-image` }
+        />
+      </button>
       <div>
         <div>
           <button
@@ -54,24 +63,28 @@ export function DoneRecipeCard({
             {name}
           </button>
           <span data-testid={ `${index}-horizontal-top-text` }>
-            {`${nationality} - ${category}`}
-            {alcoholicOrNot ? 'Alcoholic' : ''}
+            {`- ${nationality} - ${category}`}
+            {alcoholicOrNot ? ' - Alcoholic' : null}
           </span>
         </div>
         <button
-          data-testid={ `${index}-horizontal-share-btn` }
           onClick={ handleShareButton }
           src="shareIcon"
         >
-          {isRecipeCopied ? 'Link copied!' : 'Share'}
+          <img
+            src={ shareIcon }
+            alt="share-btn"
+            data-testid={ `${index}-horizontal-share-btn` }
+          />
         </button>
+        {isRecipeCopied && 'Link copied!'}
       </div>
-      <span data-testid={ `${index}-horizontal-done-date` }>{doneDate}</span>
+      <p data-testid={ `${index}-horizontal-done-date` }>{doneDate}</p>
       <div>
         {tags.map((tag, i) => (
-          <span key={ i } data-testid={ `${index}-${tag}-horizontal-tag` }>
+          <p key={ i } data-testid={ `${index}-${tag}-horizontal-tag` }>
             {tag}
-          </span>
+          </p>
         ))}
       </div>
     </div>

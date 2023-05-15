@@ -15,16 +15,18 @@ export function FilterButtons({ setFilteredDoneRecipes }) {
   const isMealButton = (name) => name === 'Meals';
 
   return (
-    <div>
+    <div className="flex gap-4">
       {buttonName.map((name) => (
         <button
           key={ `${name}-filter` }
+          className="bg-blue-500 border-blue-950"
           id={ isMealButton(name) ? 'meal' : 'drink' }
           onClick={ ({ target }) => handleFilter(target.id) }
           data-testid={
             isMealButton(name) ? 'filter-by-meal-btn' : 'filter-by-drink-btn'
           }
         >
+          {' '}
           {name}
         </button>
       ))}
