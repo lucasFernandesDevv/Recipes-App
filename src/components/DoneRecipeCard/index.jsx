@@ -98,7 +98,7 @@ DoneRecipeCard.propTypes = {
   name: PropTypes.string,
   nationality: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
-  alcoholicOrNot: PropTypes.bool,
+  alcoholicOrNot: PropTypes.string,
   type: PropTypes.string,
   id: PropTypes.string,
   image: PropTypes.string,
