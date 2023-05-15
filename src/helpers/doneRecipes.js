@@ -1,9 +1,5 @@
 export const doneRecipes = (recipe, location) => {
   const dataAtual = new Date();
-  const dia = dataAtual.getDate().toString().padStart(2, '0');
-  const mes = (dataAtual.getMonth() + 1).toString().padStart(2, '0');
-  const ano = dataAtual.getFullYear().toString();
-  const dataFormatada = `${dia}/${mes}/${ano}`;
   const params = {
     id: location.pathname.includes('meals') ? recipe.idMeal : recipe.idDrink,
     type: location.pathname.includes('meals') ? 'meal' : 'drink',
@@ -13,7 +9,7 @@ export const doneRecipes = (recipe, location) => {
     name: location.pathname.includes('meals') ? recipe.strMeal : recipe.strDrink,
     image: location.pathname.includes('meals') ? recipe.strMealThumb
       : recipe.strDrinkThumb,
-    doneDate: dataFormatada,
+    doneDate: dataAtual,
     tags: location.pathname.includes('meals') ? [recipe.strTags] || [] : [],
   };
   const getDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];

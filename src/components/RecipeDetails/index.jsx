@@ -201,7 +201,7 @@ export default function RecipeDetails() {
           ? btnContinueRecipe
           : btnStartRecipe
       } */}
-      <div className="flex justify-center gap-4">
+      <div className="flex justify-start gap-4">
         <button
           onClick={ handleClick }
           className="bg-blue-500 py-2 px-2 mb-2 ml-2 border-2 rounded-md
