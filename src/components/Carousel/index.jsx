@@ -23,9 +23,9 @@ export default function Carousel() {
       ? 'strInstructions' : 'strInstructions',
   };
 
-  const { pathname } = location;
   useEffect(() => {
     const handleMeals = async () => {
+      const { pathname } = location;
       let results;
       if (pathname.includes('drinks')) {
         results = await fetchData(URL_MEALS_API);
@@ -36,7 +36,7 @@ export default function Carousel() {
     };
     handleMeals();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [location.pathname]);
 
   return (
     <div className="container-recommended">
