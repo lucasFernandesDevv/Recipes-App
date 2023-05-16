@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 import React, { useEffect, useState } from 'react';
 import { useHistory,
   useLocation,
@@ -22,11 +21,6 @@ const btnDisabled = 'bg-green-200 py-2 px-2 mb-2 ml-2 border-2'
 + 'rounded-md text-white border-green-300 shadow-2xl shadow-blue-500/50';
 
 const FAVORITE_RECIPES = 'favoriteRecipes';
-
-window.addEventListener('beforeunload', () => {
-  // localStorage.clear(); COMENTADO POR RESETAR LOCALSTORAGE DA APLICAÇÃO INTEIRA
-  // FAZENDO NÃO FUNCIONAR OUTAS PÁGINAS, FAVOR REFATORAR (Ass, Gabriel Rodrigues)
-});
 
 function RecipeInProgress() {
   const location = useLocation();
@@ -185,19 +179,13 @@ function RecipeInProgress() {
           src={ infos.imgLink }
           alt={ infos.title }
         />
-        <h2
-          data-testid="recipe-title"
-        >
+        <h2 data-testid="recipe-title">
           { infos.title }
         </h2>
-        <h3
-          data-testid="recipe-category"
-        >
+        <h3 data-testid="recipe-category">
           {infos.category}
         </h3>
-        <h3
-          data-testid="instructions"
-        >
+        <h3 data-testid="instructions">
           {infos.instructions}
         </h3>
         {
@@ -233,9 +221,7 @@ function RecipeInProgress() {
           Finish Recipe
         </button>
         <div className="flex justify-center gap-4">
-          <button
-            onClick={ onFavorite }
-          >
+          <button onClick={ onFavorite }>
             <img
               data-testid="favorite-btn"
               src={ idFavorite ? favoriteChecked : favoriteIcon }
@@ -243,10 +229,7 @@ function RecipeInProgress() {
             />
           </button>
           {' '}
-          <button
-            data-testid="share-btn"
-            onClick={ handleShare }
-          >
+          <button data-testid="share-btn" onClick={ handleShare }>
             <img src={ shareIcon } alt="share-btn" />
           </button>
         </div>
