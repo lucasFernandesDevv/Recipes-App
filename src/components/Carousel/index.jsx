@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import './Carousel.css';
 
@@ -23,9 +23,9 @@ export default function Carousel() {
       ? 'strInstructions' : 'strInstructions',
   };
 
+  const { pathname } = location;
   useEffect(() => {
     const handleMeals = async () => {
-      const { pathname } = location;
       let results;
       if (pathname.includes('drinks')) {
         results = await fetchData(URL_MEALS_API);
@@ -36,7 +36,7 @@ export default function Carousel() {
     };
     handleMeals();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [pathname]);
 
   return (
     <div className="container-recommended">
@@ -45,28 +45,28 @@ export default function Carousel() {
         {
           recommends.map((recommend, index) => (
             // Não funcionou, porém não é critério de avaliação:
-            // <Link
-            //   key={ recommend[params.id] }
-            //   to={ `/${params.type}/${recommend[params.id]}` }
-            // >
-            <div
-              data-testid={ `${index}-recommendation-card` }
-              className="carousel-item"
-              key={ recommend[params.id] }
+            <Link
+              key={ index }
+              to={ `/${params.type}/${recommend[params.id]}` }
             >
-              <img
-                data-testid={ `${index}-card-img` }
-                className="recommend-img"
-                src={ recommend[params.img] }
-                alt={ recommend[params.name] }
-              />
-              <h2
-                data-testid={ `${index}-recommendation-title` }
+              <div
+                data-testid={ `${index}-recommendation-card` }
+                className="carousel-item"
+              // key={ recommend[params.id] }
               >
-                { recommend[params.name] }
-              </h2>
-            </div>
-            // </Link>
+                <img
+                  data-testid={ `${index}-card-img` }
+                  className="recommend-img"
+                  src={ recommend[params.img] }
+                  alt={ recommend[params.name] }
+                />
+                <h2
+                  data-testid={ `${index}-recommendation-title` }
+                >
+                  { recommend[params.name] }
+                </h2>
+              </div>
+            </Link>
           ))
         }
       </div>
