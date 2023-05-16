@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory,
+  useLocation,
+  useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import clipboardCopy from 'clipboard-copy';
 import Footer from '../../components/Footer';
 import Header from '../../components/Header';
@@ -20,13 +22,9 @@ const btnDisabled = 'bg-green-200 py-2 px-2 mb-2 ml-2 border-2'
 
 const FAVORITE_RECIPES = 'favoriteRecipes';
 
-window.addEventListener('beforeunload', () => {
-  // localStorage.clear(); COMENTADO POR RESETAR LOCALSTORAGE DA APLICAÇÃO INTEIRA
-  // FAZENDO NÃO FUNCIONAR OUTAS PÁGINAS, FAVOR REFATORAR (Ass, Gabriel Rodrigues)
-});
-
 function RecipeInProgress() {
   const location = useLocation();
+  const history = useHistory();
   const { id } = useParams();
   const { fetchData } = useFetch();
   const [infos, setInfos] = useState({});
@@ -36,6 +34,7 @@ function RecipeInProgress() {
   const [allCheckeds, setAllCheckeds] = useState(false);
   const [idFavorite, setIdFavorite] = useState(false);
   const [recipe, setRecipe] = useState({});
+  const [checkboxes, setCheckboxes] = useState(['false']);
 
   const params = {
     type: location.pathname.includes('meals') ? 'meals' : 'drinks',
@@ -99,6 +98,7 @@ function RecipeInProgress() {
   const onFavorite = () => {
     if (idFavorite) {
       const favoritesLS = JSON.parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
+      console.log(favoritesLS);
       const newFavoritesLS = favoritesLS.filter((fav) => fav.id !== id);
       localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(newFavoritesLS));
     } else {
@@ -109,7 +109,7 @@ function RecipeInProgress() {
 
   useEffect(() => {
     const recipeInLS = JSON.parse(localStorage.getItem('inProgressRecipes'));
-    if (!recipeInLS[params.type][id]) {
+    if (!recipeInLS[params.type]) {
       ingredients.forEach(({ ingredient }) => {
         setControlCheck((prev) => ({ ...prev, [ingredient]: false }));
       });
@@ -133,6 +133,12 @@ function RecipeInProgress() {
 
   const handleChange = ({ target }) => {
     const { name, checked } = target;
+    const arrayCheckboxes = [];
+    const check = document.querySelectorAll('.ingredient-checkbox');
+    check.forEach((box) => {
+      arrayCheckboxes.push(box.checked);
+    });
+    setCheckboxes(arrayCheckboxes);
     setControlCheck({
       ...controlCheck,
       [name]: checked,
@@ -163,7 +169,6 @@ function RecipeInProgress() {
     const verifyCheckbox = Object.values(controlCheck).every((val) => val !== false);
     setAllCheckeds(verifyCheckbox);
   }, [controlCheck]);
-
   return (
     <>
       <Header title="Recipes in Progress" />
@@ -174,19 +179,13 @@ function RecipeInProgress() {
           src={ infos.imgLink }
           alt={ infos.title }
         />
-        <h2
-          data-testid="recipe-title"
-        >
+        <h2 data-testid="recipe-title">
           { infos.title }
         </h2>
-        <h3
-          data-testid="recipe-category"
-        >
+        <h3 data-testid="recipe-category">
           {infos.category}
         </h3>
-        <h3
-          data-testid="instructions"
-        >
+        <h3 data-testid="instructions">
           {infos.instructions}
         </h3>
         {
@@ -202,6 +201,7 @@ function RecipeInProgress() {
               {`${map.ingredient}`}
               <input
                 type="checkbox"
+                className="ingredient-checkbox"
                 name={ map.ingredient }
                 onChange={ handleChange }
                 checked={ controlCheck[map.ingredient] }
@@ -212,15 +212,16 @@ function RecipeInProgress() {
         <button
           className={ allCheckeds ? btnEnabled : btnDisabled }
           data-testid="finish-recipe-btn"
-          disabled={ !allCheckeds }
-          onClick={ () => doneRecipes(recipe, location) }
+          disabled={ !checkboxes.every((checked) => checked === true) }
+          onClick={ () => {
+            doneRecipes(recipe, location);
+            history.push('/done-recipes');
+          } }
         >
           Finish Recipe
         </button>
         <div className="flex justify-center gap-4">
-          <button
-            onClick={ onFavorite }
-          >
+          <button onClick={ onFavorite }>
             <img
               data-testid="favorite-btn"
               src={ idFavorite ? favoriteChecked : favoriteIcon }
@@ -228,10 +229,7 @@ function RecipeInProgress() {
             />
           </button>
           {' '}
-          <button
-            data-testid="share-btn"
-            onClick={ handleShare }
-          >
+          <button data-testid="share-btn" onClick={ handleShare }>
             <img src={ shareIcon } alt="share-btn" />
           </button>
         </div>
