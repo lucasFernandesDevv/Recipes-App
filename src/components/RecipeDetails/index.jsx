@@ -70,7 +70,7 @@ export default function RecipeDetails() {
       setIdFavorite(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     const verifyInProgressRecipe = JSON.parse(localStorage.getItem(IN_PROGRESS_RECIPES));
@@ -85,8 +85,11 @@ export default function RecipeDetails() {
   useEffect(() => {
     if (recipe[params.video]) {
       setUrlVideo(recipe[params.video].replace('watch?v=', 'embed/'));
+    } else {
+      setUrlVideo('');
     }
-  }, [params.video, recipe]);
+  }, [params.video, recipe, location.pathname]);
+
   const handleClick = () => {
     if (location.pathname.includes('meals') === true) {
       history.push(`/meals/${id}/in-progress`);
@@ -138,7 +141,7 @@ export default function RecipeDetails() {
 
   const onFavorite = () => {
     if (idFavorite) {
-      const favoritesLS = JSON.parse(localStorage.getItem(FAVORITE_RECIPES)) || [];
+      const favoritesLS = JSON.parse(localStorage.getItem(FAVORITE_RECIPES));
       const newFavoritesLS = favoritesLS.filter((fav) => fav.id !== id);
       localStorage.setItem(FAVORITE_RECIPES, JSON.stringify(newFavoritesLS));
     } else {
@@ -196,11 +199,6 @@ export default function RecipeDetails() {
       {
         hasCopyLink && <p>Link copied!</p>
       }
-      {/* {
-        recipeInProgress
-          ? btnContinueRecipe
-          : btnStartRecipe
-      } */}
       <div className="flex justify-start gap-4">
         <button
           onClick={ handleClick }
