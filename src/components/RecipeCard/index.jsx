@@ -18,6 +18,7 @@ export default function RecipeCard({ name = '', thumb = '', index = 0, id = '' }
       className="w-44 rounded-lg border border-yellow-400 flex flex-col"
       data-testid={ `${index}-recipe-card` }
       onClickCapture={ () => handleRedirectToRecipeDetails(id) }
+      style={ { cursor: 'pointer' } }
     >
       <img
         data-testid={ `${index}-card-img` }

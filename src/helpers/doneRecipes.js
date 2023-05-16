@@ -1,5 +1,6 @@
 export const doneRecipes = (recipe, location) => {
   const dataAtual = new Date();
+  const tags = recipe.strTags?.split(',');
   const params = {
     id: location.pathname.includes('meals') ? recipe.idMeal : recipe.idDrink,
     type: location.pathname.includes('meals') ? 'meal' : 'drink',
@@ -10,10 +11,11 @@ export const doneRecipes = (recipe, location) => {
     image: location.pathname.includes('meals') ? recipe.strMealThumb
       : recipe.strDrinkThumb,
     doneDate: dataAtual,
-    tags: location.pathname.includes('meals') ? [recipe.strTags] || [] : [],
+    tags: location.pathname.includes('meals') ? tags || [] : [],
   };
   const getDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
   const newDone = [...getDoneRecipes, params];
+  console.log(newDone);
   localStorage.setItem('doneRecipes', JSON.stringify(newDone));
 };
 
